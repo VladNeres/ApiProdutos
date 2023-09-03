@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Aplication\Aplication.csproj" />
+    <ProjectReference Include="..\ConnectionSql\ConnectionSql.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 

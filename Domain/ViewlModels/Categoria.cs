@@ -2,8 +2,9 @@
 
 namespace Domain.ViewlModels
 {
-    public class Categorias
+    public class Categoria
     {
+        [Key]
         public  int ID { get; set; }
         [Required(ErrorMessage = "O Campo nome é obrigatório")]
         public string Nome { get; set; }
