@@ -17,34 +17,35 @@ namespace ConnectionSql.Repositories
               (_connetionString, _captureClientConnectionId) = (connectionString, captureClientConnection);
         protected async Task<int> ExecuteAsync(string query, object param = null, CommandType? commandType = null)
         {
-            try
-            {
-                SqlConnection connection = new SqlConnection(_connetionString);
+            
+                using SqlConnection connection = new SqlConnection(_connetionString);
                 connection.Open();
 
                 GetClientConnection(connection);
 
                 return await connection.ExecuteAsync(query, param, commandType: commandType);
-
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine(ex.Message);
-                var message = Task.FromResult(0);
-                return await message;
-            }
+            
+            
 
         }
 
         protected async Task<T> QueryFirstOrDefaultAsync<T>(string query, object param = null, CommandType? commandType = null)
         {
-            using IDbConnection conn = new SqlConnection(_connetionString);
-            conn.Open();
+            try
+            {
+                using IDbConnection conn = new SqlConnection(_connetionString);
+                conn.Open();
 
-            GetClientConnection(conn);
+                GetClientConnection(conn);
 
-            return await conn.QueryFirstOrDefaultAsync<T>(query, param, commandType: commandType);
+                return await conn.QueryFirstOrDefaultAsync<T>(query, param, commandType: commandType);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         protected async Task<IEnumerable<T>> QueryAsync<T>(string query, object param = null, CommandType? commandType = null)

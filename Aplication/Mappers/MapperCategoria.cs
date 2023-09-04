@@ -6,30 +6,52 @@ namespace Aplication.Mappers
 {
     public static class MapperCategoria
     {
-        public static Categoria ParaCreateCategoriaDto(CreateCategoriaDto categoriaDto) =>
+        public static Categoria ParaCategoria(CreateCategoriaDto categoriaDto) =>
           new Categoria()
           {
-                Nome = categoriaDto.Nome,
-                DataCriacao = categoriaDto.DataCriacao,
-                DataAlteracao = categoriaDto.DataAlteracao
+              Nome = categoriaDto.Nome,
+              DataCriacao = DateTime.Now
           };
 
-        
 
-         public static Categoria ParaUpdateCategoriaDto(UpdateCategoriaDto updateCategoria) =>
-            new Categoria()
+
+        public static Categoria ParaUpdateCategoriaDto(UpdateCategoriaDto updateCategoria) =>
+
+           new Categoria()
+           {
+               Nome = updateCategoria.Nome,
+               DataCriacao = updateCategoria.DataCriacao,
+               DataAlteracao = updateCategoria.DataCriacao
+           };
+        public static ReadCategoriaDto ParaReadCategoriaDto(Categoria categoria)
+        {
+            if (categoria.DataAlteracao < DateTime.MinValue)
             {
-                Nome = updateCategoria.Nome,
-                DataCriacao = updateCategoria.DataCriacao,
-                DataAlteracao = updateCategoria.DataCriacao
+                return new ReadCategoriaDto()
+                {
+                    Nome = categoria.Nome,
+                    DataCriacao = categoria.DataCriacao
+                };
+            }
+            return new ReadCategoriaDto()
+            {
+                Nome = categoria.Nome,
+                DataCriacao = categoria.DataCriacao,
+                DataAlteracao = categoria.DataCriacao
             };
-        public static ReadCategoriaDto ParaReadCategoriaDto(Categoria categoria) =>
-          new ReadCategoriaDto() 
-          { Nome = categoria.Nome, 
-            DataCriacao = categoria.DataCriacao, 
-            DataAlteracao = categoria.DataCriacao
-          };
+        }
 
-      
+        public static IEnumerable<ReadCategoriaDto> ParaListaReadCategoriaDto(IEnumerable<Categoria> categoria)
+        {
+            
+            foreach (Categoria c in categoria)
+            {
+                if(c.DataAlteracao> DateTime.MinValue)
+                yield return new ReadCategoriaDto() { Nome = c.Nome, DataAlteracao = c.DataAlteracao, DataCriacao = c.DataCriacao };
+                else yield return new ReadCategoriaDto() { Nome =c.Nome , DataCriacao = c.DataCriacao };
+            }
+
+
+        }
     }
 }

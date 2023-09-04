@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Aplication.interfaces;
+﻿using Aplication.interfaces;
 using Aplication.Mappers;
 using ConnectionSql.Dtos;
 using ConnectionSql.RepositopriesInterfaces;
 using Domain.ViewlModels;
+using Newtonsoft.Json;
 
 namespace Aplication.Services
 {
@@ -20,15 +16,56 @@ namespace Aplication.Services
             _repository = repository;
         }
 
-
-        public async Task<IEnumerable<Categoria>> BuscarTodasCategorias()
+        public async Task<IEnumerable<ReadCategoriaDto>> BuscarTodasCategorias()
         {
-            return await _repository.BuscarTodasAscategorias();
+            var buascarTodasCategorias = await _repository.BuscarTodasAscategorias();
+            if(buascarTodasCategorias.Count() > 0 || buascarTodasCategorias.Any())
+            {
+               var response =  MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias);
+               return response;
+            }
+            return null;
         }
 
-        public async Task CriarCategoria(Categoria categoriaDto)
+        public async Task<ReadCategoriaDto> BuscarCategoriasPorId(int id)
         {
-            var response =  _repository.CriarCategoria(categoriaDto);
+            var buascarTodasCategorias = await _repository.BuscarCategoriasPorId(id);
+            if (buascarTodasCategorias != null)
+            {
+                try
+                {
+                    var response =  MapperCategoria.ParaReadCategoriaDto(buascarTodasCategorias);
+                    return response;
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return null;
+        }
+        public async Task<Categoria> CriarCategoria(CreateCategoriaDto categoriaDto)
+        {
+            try
+            {
+                   Categoria categoria = MapperCategoria.ParaCategoria(categoriaDto);
+                Task<Categoria> response =  _repository.CriarCategoria(categoria);
+                
+                if (!response.IsCompleted)
+                    throw response.Exception;
+                   
+                return await response;
+           
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
             
         }
     }

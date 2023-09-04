@@ -26,7 +26,9 @@ public class CategoriaController : ControllerBase
     [ProducesResponseType(typeof(int), 500)]
     public async Task<IActionResult> GetAll()
     {
-        return Ok();
+        var response = await _categoriaService.BuscarTodasCategorias();
+        if(response == null) return NoContent();
+        return Ok(response);
     }
 
     /// <summary>
@@ -38,19 +40,29 @@ public class CategoriaController : ControllerBase
     [ProducesResponseType(typeof (int), 200)]
     [ProducesResponseType(typeof (int), 204)]
     [ProducesResponseType(typeof (int), 400)]
-    public async Task<IActionResult> GetFirst(int id)
+    public async Task<IActionResult> GetFirstOrDefault(int id)
     {
-        return Ok();
+        var response = await _categoriaService.BuscarCategoriasPorId(id);
+        if(response == null) return NoContent(); return Ok(response);
     }
 
     [HttpPost]
     [ProducesResponseType (typeof (int), 201)]
     [ProducesResponseType (typeof (int), 500)]
-    public async Task<IActionResult> CriarCategoria([FromBody] Categoria categoria)
+    public async Task<IActionResult> CriarCategoria([FromBody] CreateCategoriaDto categoria)
     {
-        var response = _categoriaService.CriarCategoria(categoria);
-        if(response == null) return BadRequest();
-        return Ok(response); 
+        try
+        {
+            var response = _categoriaService.CriarCategoria(categoria);
+            if(response.IsFaulted) return BadRequest(response.Result);
+            return Ok(response); 
+
+        }
+        catch (Exception ex)
+        {
+
+            return StatusCode(500,ex.Message);
+        }
     }
 
     [HttpPatch]
