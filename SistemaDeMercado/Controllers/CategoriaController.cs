@@ -54,9 +54,9 @@ public class CategoriaController : ControllerBase
     {
         try
         {
-            var response = _categoriaService.CriarCategoria(categoria);
-            if (!response.IsCompletedSuccessfully) return BadRequest(response.Result);
-            return Ok(response);
+            var response = await  _categoriaService.CriarCategoria(categoria);
+            if (response.StatusCode != StatusCodes.Status201Created) return BadRequest(response);
+            return  Ok(response);
 
         }
         catch (Exception ex)
@@ -68,6 +68,7 @@ public class CategoriaController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(int), 204)]
+    [ProducesResponseType(typeof(int), 400)]
     [ProducesResponseType(typeof(int), 500)]
     public async Task<IActionResult> Atualizar(int id, [FromBody] UpdateCategoriaDto categoria)
     {
@@ -75,7 +76,7 @@ public class CategoriaController : ControllerBase
         {
             MensagemBase<UpdateCategoriaDto> response = await _categoriaService.AtualizarCategoriaCompleta(id, categoria);
 
-            if (response == null) return BadRequest();
+            if (response.StatusCode >= 400) return BadRequest();
             return NoContent();
 
         }

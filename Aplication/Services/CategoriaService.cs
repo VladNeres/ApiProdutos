@@ -22,7 +22,7 @@ namespace Aplication.Services
             var buascarTodasCategorias = await _repository.BuscarTodasAscategorias();
             if(buascarTodasCategorias.Count() > 0 || buascarTodasCategorias.Any())
             {
-               var response =  MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias);
+               var response = MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias);
                 return new MensagemBase<IEnumerable<ReadCategoriaDto>>()
                 {
                     StatusCode = 200,
@@ -65,27 +65,28 @@ namespace Aplication.Services
                 throw;
             }
         }
-        public async Task <MensagemBase<Categoria>> CriarCategoria(CreateCategoriaDto categoriaDto)
+        public async Task <MensagemBase<CreateCategoriaDto>> CriarCategoria(CreateCategoriaDto categoriaDto)
         {
             try
             {
                var buscaCategorias = await _repository.VerificarSeExisteCategoria(categoriaDto.Nome);
                
 
-                if (buscaCategorias)
-                    return new MensagemBase<Categoria>()
+                if (buscaCategorias == true)
+                    return new MensagemBase<CreateCategoriaDto>()
                     {
                         Message = "A categoria ja existe",
                         Object = null,
                         StatusCode = StatusCodes.Status204NoContent
                     };
 
-                Categoria categoria = MapperCategoria.ParaCategoria(categoriaDto);
+               Categoria categoria = MapperCategoria.ParaCategoria(categoriaDto);
                var response = await _repository.CriarCategoria(categoria);
 
-                return new MensagemBase<Categoria>()
+                return new MensagemBase<CreateCategoriaDto>()
                 {
                     Message = "Categoria criada com sucesso",
+                    Object = categoriaDto,
                     StatusCode = StatusCodes.Status201Created
                 };
            

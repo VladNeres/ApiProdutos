@@ -9,7 +9,7 @@ namespace Aplication.interfaces
     {
         Task<MensagemBase<IEnumerable<ReadCategoriaDto>>> BuscarTodasCategorias();
         Task<MensagemBase<ReadCategoriaDto>> BuscarCategoriasPorId(int id);
-        Task<MensagemBase<Categoria>> CriarCategoria(CreateCategoriaDto categoriaDto);
+        Task<MensagemBase<CreateCategoriaDto>> CriarCategoria(CreateCategoriaDto categoriaDto);
         Task<MensagemBase<UpdateCategoriaDto>> AtualizarCategoriaCompleta(int id, UpdateCategoriaDto updateCategoria);
         Task<MensagemBase<Categoria>> DeletarCategoria(int id);
     }

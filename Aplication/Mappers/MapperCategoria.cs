@@ -19,11 +19,12 @@ namespace Aplication.Mappers
            new Categoria()
            {
                Nome = updateCategoria.Nome,
+               DataAlteracao = DateTime.Now
            };
 
         public static ReadCategoriaDto ParaReadCategoriaDto(Categoria categoria)
         {
-            if (categoria.DataAlteracao < DateTime.MinValue)
+            if (categoria.DataAlteracao <= DateTime.MinValue)
             {
                 return new ReadCategoriaDto()
                 {
@@ -44,7 +45,7 @@ namespace Aplication.Mappers
             
             foreach (Categoria c in categoria)
             {
-                if(c.DataAlteracao != null)
+                if(c.DataAlteracao > DateTime.MinValue )
                 yield return new ReadCategoriaDto() { Nome = c.Nome, DataAlteracao = c.DataAlteracao, DataCriacao = c.DataCriacao };
                 else yield return new ReadCategoriaDto() { Nome =c.Nome , DataCriacao = c.DataCriacao };
             }
