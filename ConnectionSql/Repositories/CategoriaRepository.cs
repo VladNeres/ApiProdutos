@@ -100,12 +100,21 @@ namespace ConnectionSql.Repositories
 
         public async Task<int> DeletarCategoria(int id)
         {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@Id", id, DbType.Int32);
+            try
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@Id", id, DbType.Int32);
 
-            string query = @"Delete * From Categorias WHERE ID = @Id";
+                string query = @"Delete  From Categorias WHERE ID = @Id";
 
-            return await ExecuteAsync(query, param, CommandType.Text);
+                return await ExecuteAsync(query, param, CommandType.Text);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
