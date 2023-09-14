@@ -41,6 +41,7 @@ public class CategoriaController : ControllerBase
     [ProducesResponseType(typeof(int), 200)]
     [ProducesResponseType(typeof(int), 204)]
     [ProducesResponseType(typeof(int), 400)]
+    [ProducesResponseType(typeof(int), 500)]
     public async Task<IActionResult> GetFirstOrDefault(int id)
     {
         var response = await _categoriaService.BuscarCategoriasPorId(id);
@@ -74,7 +75,7 @@ public class CategoriaController : ControllerBase
     {
         try
         {
-            MensagemBase<UpdateCategoriaDto> response = await _categoriaService.AtualizarCategoriaCompleta(id, categoria);
+            MensagemBase<UpdateCategoriaDto> response = await _categoriaService.AtualizarCategoria(id, categoria);
 
             if (response.StatusCode >= 400) return BadRequest();
             return NoContent();

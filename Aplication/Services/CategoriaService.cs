@@ -48,7 +48,7 @@ namespace Aplication.Services
                         return new MensagemBase<ReadCategoriaDto>()
                         {
                             Object = response,
-                            StatusCode = StatusCodes.Status204NoContent,
+                            StatusCode = StatusCodes.Status200OK,
                         };
 
                 }
@@ -99,20 +99,10 @@ namespace Aplication.Services
             }
         }
 
-        public async Task<MensagemBase<UpdateCategoriaDto>> AtualizarCategoriaCompleta(int id, UpdateCategoriaDto updateCategoria)
+        public async Task<MensagemBase<UpdateCategoriaDto>> AtualizarCategoria(int id, UpdateCategoriaDto updateCategoria)
         {
-           List<Categoria> categoriaDto = await _repository.BuscarTodasAscategorias();
-            Categoria categoria = MapperCategoria.DeUpdateCategoriaDtoParaCategoria(updateCategoria);
-            if (categoriaDto.FirstOrDefault(c => c.ID == id) == null) 
-            return new MensagemBase<UpdateCategoriaDto>()
-            {
-                Message = "Categoria não encontrada",
-                Object = null,
-                StatusCode = StatusCodes.Status204NoContent
-            };
-
-            
-            if(updateCategoria == null || categoriaDto.Any(c => c.Nome.Equals(updateCategoria.Nome)))
+            bool existeCategoria = await _repository.VerificarSeExisteCategoria(updateCategoria.Nome);
+            if(existeCategoria == true)
             {
                 return new MensagemBase<UpdateCategoriaDto>()
                 {
@@ -122,6 +112,7 @@ namespace Aplication.Services
                 };
             }
 
+            Categoria categoria = MapperCategoria.DeUpdateCategoriaDtoParaCategoria(updateCategoria);
            int Atualizar =  await _repository.AtualizarCategoria(id, categoria);
 
             return new MensagemBase<UpdateCategoriaDto>()
