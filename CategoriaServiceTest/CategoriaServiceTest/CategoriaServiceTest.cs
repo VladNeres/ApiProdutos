@@ -68,7 +68,7 @@ public class CategoriaServiceTest
          _repository.BuscarTodasAscategorias().Returns(listCategoria);
 
         //ACT
-        var response = await _service.AtualizarCategoriaCompleta(id, createCategoria);
+        var response = await _service.AtualizarCategoria(id, createCategoria);
 
         //ASSERT
         Assert.Equal(204, response.StatusCode);
