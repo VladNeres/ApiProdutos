@@ -23,7 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ConnectionSql\ConnectionSql.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Teste\Teste.csproj" />
   </ItemGroup>
 
 </Project>

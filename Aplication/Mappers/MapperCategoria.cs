@@ -49,8 +49,8 @@ namespace Aplication.Mappers
                 yield return new ReadCategoriaDto() { Nome = c.Nome, DataAlteracao = c.DataAlteracao, DataCriacao = c.DataCriacao };
                 else yield return new ReadCategoriaDto() { Nome =c.Nome , DataCriacao = c.DataCriacao };
             }
-
-
         }
+
+
     }
 }
