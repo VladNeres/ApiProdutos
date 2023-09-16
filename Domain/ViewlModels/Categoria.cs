@@ -10,5 +10,7 @@ namespace Domain.ViewlModels
         public string Nome { get; set; }
         public DateTime DataCriacao { get; set; } 
         public DateTime DataAlteracao { get; set; }
+
+        public List<Produtos> Produtos { get; set; }
     }
 }
