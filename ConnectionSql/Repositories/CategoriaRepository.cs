@@ -49,15 +49,13 @@ namespace ConnectionSql.Repositories
 
         public async Task<bool> VerificarSeExisteCategoria(string nome)
         {
-            
                 DynamicParameters prameters = new DynamicParameters();
                 prameters.Add("@Nome", nome, DbType.AnsiString);
                 
-            string query = @"Select * From Categorias Where Nome = @Nome";
+               string query = @"Select * From Categorias Where Nome = @Nome";
 
                 var retorno = await QueryFirstOrDefaultAsync<bool>(query,param: prameters, commandType: CommandType.Text);
                 return retorno;
-            
         }
 
 

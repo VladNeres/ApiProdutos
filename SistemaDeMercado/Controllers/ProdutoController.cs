@@ -1,17 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aplication.SeviceInterfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SistemaDeMercado.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class ProdutoController : ControllerBase
 {
+    private readonly IProdutoService _produtoService;
+
+    public ProdutoController(IProdutoService produtoService)
+    {
+        _produtoService = produtoService;
+    }
+
     [HttpGet]
     [ProducesResponseType(typeof(int), 200)]
     [ProducesResponseType(typeof(int), 204)]
     [ProducesResponseType(typeof(int), 500)]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        return Ok();
+       var resopnse = await _produtoService.BuscarPedidos();
+        if(resopnse == null) return NoContent();
+        return Ok(resopnse);
     }
 
     [HttpGet("{id}")]
