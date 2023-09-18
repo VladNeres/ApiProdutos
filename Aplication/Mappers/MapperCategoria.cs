@@ -9,8 +9,7 @@ namespace Aplication.Mappers
         public static Categoria ParaCategoria(CreateCategoriaDto categoriaDto) =>
           new Categoria()
           {
-              Nome = categoriaDto.Nome,
-              DataCriacao = DateTime.Now
+              Nome = categoriaDto.Nome
           };
 
 
@@ -24,16 +23,8 @@ namespace Aplication.Mappers
 
         public static ReadCategoriaDto ParaReadCategoriaDto(Categoria categoria)
         {
-            if (categoria.DataAlteracao <= DateTime.MinValue)
-            {
-                return new ReadCategoriaDto()
-                {
-                    Nome = categoria.Nome,
-                    DataCriacao = categoria.DataCriacao
-                };
-            }
             return new ReadCategoriaDto()
-            {
+            { 
                 Nome = categoria.Nome,
                 DataCriacao = categoria.DataCriacao,
                 DataAlteracao = categoria.DataCriacao

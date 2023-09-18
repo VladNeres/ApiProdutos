@@ -17,11 +17,9 @@ namespace Aplication.Mappers.mapperProduto
                 Nome = CreateprodutoDto.Nome,
                 Valor = CreateprodutoDto.Valor,
                 Status = CreateprodutoDto.Status,
-                DataCriacao = CreateprodutoDto.DataCriacao,
-                DataAlteracao = CreateprodutoDto.DataAlteracao,
                 QuantidadeEmEstoque = CreateprodutoDto.QuantidadeEmEstoque,
-                Categoria = CreateprodutoDto.Categoria,
-                CategoriaId = CreateprodutoDto.CategoriaId
+                CategoriaId = CreateprodutoDto.CategoriaId,
+                DataCriacao = DateTime.Now,
             };
         }
 
@@ -29,14 +27,12 @@ namespace Aplication.Mappers.mapperProduto
         {
             return new Produto()
             {
-                Categoria = updateProduto.Categoria,
                 Nome = updateProduto.Nome,
                 Valor = updateProduto.Valor,
                 Status = updateProduto.Status,
                 CategoriaId = updateProduto.CategoriaId,
                 QuantidadeEmEstoque = updateProduto.QuantidadeEmEstoque,
-                DataCriacao = updateProduto.DataCriacao,
-                DataAlteracao = updateProduto.DataAlteracao
+                DataAlteracao = DateTime.Now,
             };
         }
 
@@ -52,6 +48,16 @@ namespace Aplication.Mappers.mapperProduto
                 QuantidadeEmEstoque = produto.QuantidadeEmEstoque,
                 Categoria = produto.Categoria,
                 CategoriaId = produto.CategoriaId
+            };
+        }
+
+        public static Produto UpdateSimplificadoParaProduto(UpdateProdutoSimplificado produtoSimplificado)
+        {
+            return new Produto()
+            {
+                Nome = produtoSimplificado.Nome,
+                CategoriaId = produtoSimplificado.CategoriaID,
+                DataAlteracao = DateTime.Now
             };
         }
     }

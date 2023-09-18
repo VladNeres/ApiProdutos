@@ -19,8 +19,7 @@ public class Produto
     
     public Produto()
     {
-        CodigoDoPedido = Guid.NewGuid();
-        DataCriacao = DateTime.Now;
+        
     }
 
     public Produto(int iD, string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status, int quantidadeEmEstoque, int categoriaId, Categoria categoria, Guid codigoDoPedido)
