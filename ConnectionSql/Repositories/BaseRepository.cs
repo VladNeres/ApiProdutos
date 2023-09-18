@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MySqlX.XDevAPI.Relational;
 using System.Data;
 using System.Data.SqlClient;
 using static Dapper.SqlMapper;
@@ -48,6 +49,16 @@ namespace ConnectionSql.Repositories
             }
         }
 
+        protected async Task<T>QuerySingleAsync<T>(string query, object param = null, CommandType? commandType = null)
+        {
+            using IDbConnection conn = new SqlConnection(_connetionString);
+            conn.Open();
+
+            GetClientConnection(conn);
+
+            return await conn.QuerySingleAsync<T>(query, param, commandType: commandType);
+        }
+      
         protected async Task<IEnumerable<T>> QueryAsync<T>(string query, object param = null, CommandType? commandType = null)
         {
             using IDbConnection conn = new SqlConnection(_connetionString);

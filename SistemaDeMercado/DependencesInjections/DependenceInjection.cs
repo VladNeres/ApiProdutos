@@ -1,5 +1,6 @@
 ﻿using Aplication.interfaces;
 using Aplication.Services;
+using Aplication.SeviceInterfaces;
 using ConnectionSql.RepositopriesInterfaces;
 using ConnectionSql.Repositories;
 
@@ -15,6 +16,7 @@ namespace SistemaDeMercado.DependencesInjections
             //    appsettings
             //===================================================================================================================================================================================================================
             services.AddSingleton<ICategoriaRepository, CategoriaRepository>(x => new CategoriaRepository(configuration["ConnectionStrings:MercadoConnection"]));
+            services.AddSingleton<IProdutoRepository, ProdutoRepository>(x => new ProdutoRepository(configuration["ConnectionStrings:MercadoConnection"]));
             //===================================================================================================================================================================================================================
 
 
@@ -31,6 +33,7 @@ namespace SistemaDeMercado.DependencesInjections
             //Scopped
             //services.AddScoped<ICategoriaRepository,CategoriaRepository>();
             services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<IProdutoService, ProdutoService>();
             return services;
         }
     }
