@@ -1,13 +1,9 @@
-﻿using ConnectionSql.Dtos.ProdutosDtos;
-using ConnectionSql.RepositopriesInterfaces;
+﻿using ConnectionSql.RepositopriesInterfaces;
 using Dapper;
 using Domain.ViewlModels;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using static Dapper.SqlMapper;
 
 namespace ConnectionSql.Repositories
 {
@@ -26,12 +22,13 @@ namespace ConnectionSql.Repositories
                                     DATACRIACAO,
                                     DATAALTERACAO,
                                     QUANTIDADEEMESTOQUE,
-                                    CategoriaID
-                              FROM Produtos";
+                                    CategoriaID,
+                                    CodigoDoPedido
+                              FROM Produtos
+                                ";
 
-                var respnse = await QueryAsync<Produto>(query, commandType: CommandType.Text);
-                return respnse.ToList();
-
+                var response = await QueryAsync<Produto>(query,MapearObjetos, commandType: CommandType.Text);
+                return response.ToList();
             }
             catch (Exception)
             {
@@ -40,6 +37,13 @@ namespace ConnectionSql.Repositories
             }
         }
 
+        private async Task<List<Produto>> MapearObjetos(GridReader reader)
+        {
+            var listaDeFiltros = (await reader.ReadAsync<Produto>()).ToList();
+            var categoria = await reader.ReadFirstOrDefaultAsync<Categoria>();
+
+            return listaDeFiltros;
+        }
         public async Task<Produto> BuscarPorId(int id)
         {
             DynamicParameters param = new DynamicParameters();
@@ -54,28 +58,45 @@ namespace ConnectionSql.Repositories
                                     QUANTIDADEEMESTOQUE,
                                     CategoriaID
                           FROM Produtos 
-                          WHERE Id = @ID";
+                          WHERE Id = @ID
+                            
+                            Select ID,NOME,DATACRIACAO, DATAALTERACAO
+                                FROM Categorias";
 
-            return await QueryFirstOrDefaultAsync<Produto>(query, param: param, commandType: CommandType.Text);
+            return await MultipleQueryAsync(query, async (GridReader reader ) => 
+            {
+                var produto = await reader.ReadFirstOrDefaultAsync<Produto>();
+                var categoria = await  reader.ReadFirstOrDefaultAsync<Categoria>();
+                return produto;
+            } ,param: param, commandType: CommandType.Text);
             
         }
 
-        public async Task<Produto> CriarProduto(Produto produto)
+        public async Task<int> CriarProduto(Produto produto)
         {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@Nome", produto.Nome, DbType.AnsiString);
-            param.Add("@Valor", produto.Valor, DbType.Double);
-            param.Add("@Status", produto.Status, DbType.Boolean);
-            param.Add("@DataCriacao", produto.DataCriacao, DbType.DateTime);
-            param.Add("@DataAlteraca", produto?.DataAlteracao, DbType.DateTime);
-            param.Add("@QuantidadeEstoque", produto.QuantidadeEmEstoque, DbType.Int32);
-            param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
+            try
+            {
+                DynamicParameters param = new DynamicParameters();
+                param.Add("@Nome", produto.Nome, DbType.AnsiString);
+                param.Add("@Valor", produto.Valor, DbType.Decimal);
+                param.Add("@Status", produto.Status, DbType.Boolean);
+                param.Add("@DataCriacao", produto.DataCriacao, DbType.DateTime);
+                param.Add("@QuantidadeEstoque", produto.QuantidadeEmEstoque, DbType.Int32);
+                param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
+                param.Add("@CodigoDoPedido",produto.CodigoDoPedido, DbType.AnsiString );
 
-            var query = @"INSERT 
-                         INTO produtos (NOME, VALOR, STATUS, DATACRIACAO, DATAALTERACAO, QUANTIDADEEMESTOQUE, CategoriaID)
-                        VALUES (@Nome,Valor,@Status,@DataCriacao,@DataAlteracao, @QuantidadeEstoque, @CategoriaID)";
+                var query = @"INSERT 
+                             INTO produtos (NOME, VALOR, STATUS, DATACRIACAO,  QUANTIDADEEMESTOQUE, CategoriaID, CodigoDoPedido)
+                            VALUES (@Nome,@Valor,@Status,@DataCriacao, @QuantidadeEstoque, @CategoriaID, @CodigoDoPedido)";
 
-            return await  QuerySingleAsync<Produto>(query, param, commandType: CommandType.Text );
+                return await ExecuteAsync(query, param, commandType: CommandType.Text);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         public async Task<bool> AtualizarProduto(int id, Produto produto)
         {

@@ -7,7 +7,7 @@ namespace ConnectionSql.RepositopriesInterfaces
     public interface ICategoriaRepository
     {
         Task<List<Categoria>> BuscarTodasAscategorias();
-        Task<Categoria> BuscarCategoriasPorId(int id);
+        Task<List<Categoria>> BuscarCategoriasPorId(int id);
         Task<int> CriarCategoria(Categoria categoria);
         Task<bool> VerificarSeExisteCategoria(string nome);
         Task<int> AtualizarCategoria(int id, Categoria categoria);

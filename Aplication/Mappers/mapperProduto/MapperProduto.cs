@@ -1,5 +1,6 @@
 ﻿using ConnectionSql.Dtos.ProdutosDtos;
 using Domain.ViewlModels;
+using Org.BouncyCastle.Asn1.IsisMtt.X509;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Aplication.Mappers.mapperProduto
 {
     public static class MapperProduto
     {
-        public static Produto CreateParaProduto(CreateProdutoDto CreateprodutoDto)
+        public static Produto CreateParaProduto(this CreateProdutoDto CreateprodutoDto)
         {
-            return new Produto ()
+            return new Produto()
             {
                 Nome = CreateprodutoDto.Nome,
                 Valor = CreateprodutoDto.Valor,
@@ -23,7 +24,7 @@ namespace Aplication.Mappers.mapperProduto
             };
         }
 
-        public static Produto UpdateParaProduto(UpdateProdutoDto updateProduto) 
+        public static Produto UpdateParaProduto(this UpdateProdutoDto updateProduto)
         {
             return new Produto()
             {
@@ -36,7 +37,7 @@ namespace Aplication.Mappers.mapperProduto
             };
         }
 
-        public static ReadProdutoDto ParaReadProdutoDto (Produto produto)
+        public static ReadProdutoDto ParaReadProdutoDto(this Produto produto)
         {
             return new ReadProdutoDto()
             {
@@ -46,12 +47,11 @@ namespace Aplication.Mappers.mapperProduto
                 DataCriacao = produto.DataCriacao,
                 DataAlteracao = produto.DataAlteracao,
                 QuantidadeEmEstoque = produto.QuantidadeEmEstoque,
-                Categoria = produto.Categoria,
                 CategoriaId = produto.CategoriaId
             };
         }
 
-        public static Produto UpdateSimplificadoParaProduto(UpdateProdutoSimplificado produtoSimplificado)
+        public static Produto UpdateSimplificadoParaProduto(this UpdateProdutoSimplificado produtoSimplificado)
         {
             return new Produto()
             {
@@ -60,5 +60,24 @@ namespace Aplication.Mappers.mapperProduto
                 DataAlteracao = DateTime.Now
             };
         }
+
+        public static ProdutoType PraraProdutoType(this Produto produto)
+        {
+            return new ProdutoType(produto.CodigoDoPedido)
+            {
+                CodigoDoPedido = produto.CodigoDoPedido
+            };
+        }
+
+        public static List<ReadProdutoDto> ParaListReadProdutoDto(this List<Produto> produtos)
+        {
+            List<ReadProdutoDto> listaRead = new List<ReadProdutoDto>();
+            foreach (var p in produtos)
+            {
+                listaRead.Add(p.ParaReadProdutoDto());
+            }
+            return listaRead;
+        }
+
     }
 }

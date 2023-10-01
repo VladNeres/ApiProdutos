@@ -1,6 +1,6 @@
 ﻿using ConnectionSql.Dtos.ProdutosDtos;
 using Domain.ViewlModels;
-
+using System.Data;
 
 namespace ConnectionSql.RepositopriesInterfaces
 {
@@ -8,7 +8,7 @@ namespace ConnectionSql.RepositopriesInterfaces
     {
         Task<List<Produto>> BuscarPedidoCompleto();
         Task<Produto> BuscarPorId(int id);
-        Task<Produto> CriarProduto(Produto produto);
+        Task<int> CriarProduto(Produto produto);
         Task<bool> AtualizarProduto(int id, Produto produto);
         Task<bool> AtualizarProdutoSimplificado(int id, Produto produto);
         Task<bool> DeleteProduto(int id);
