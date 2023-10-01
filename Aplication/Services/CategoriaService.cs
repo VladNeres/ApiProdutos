@@ -2,6 +2,7 @@
 using Aplication.Mappers;
 using ConnectionSql.Dtos;
 using ConnectionSql.RepositopriesInterfaces;
+using ConnectionSql.Repositories;
 using Domain.Messages;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +12,11 @@ namespace Aplication.Services
     public class CategoriaService : ICategoriaService
     {
         private readonly ICategoriaRepository _repository;
-
-        public CategoriaService(ICategoriaRepository repository)
+        private readonly IDataTableToBulk _dataTableToBult;
+        public CategoriaService(ICategoriaRepository repository, IDataTableToBulk dataTableToBult)
         {
             _repository = repository;
+            _dataTableToBult = dataTableToBult;
         }
 
         public async Task<MensagemBase<IEnumerable<ReadCategoriaDto>>> BuscarTodasCategorias()
@@ -44,7 +46,7 @@ namespace Aplication.Services
                 var buascarTodasCategorias = await _repository.BuscarCategoriasPorId(id);
                 if (buascarTodasCategorias != null)
                 {
-                        var response =  MapperCategoria.ParaReadCategoriaDto(buascarTodasCategorias);
+                        var response =  MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias).FirstOrDefault();
                         return new MensagemBase<ReadCategoriaDto>()
                         {
                             Object = response,
@@ -144,5 +146,7 @@ namespace Aplication.Services
                 StatusCode = StatusCodes.Status204NoContent
             };
         }
+
+
     }
 }

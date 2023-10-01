@@ -2,6 +2,7 @@ using Aplication.Mappers;
 using Aplication.Services;
 using ConnectionSql.Dtos;
 using ConnectionSql.RepositopriesInterfaces;
+using ConnectionSql.Repositories;
 using Domain.Messages;
 using NSubstitute;
 using Teste.BaseMock;
@@ -12,10 +13,12 @@ public class CategoriaServiceTest
 {
     private readonly ICategoriaRepository _repository = Substitute.For<ICategoriaRepository>();
     private readonly CategoriaService _service;
+    private readonly IDataTableToBulk _dataTableToBulk = Substitute.For<IDataTableToBulk>();
     public CategoriaServiceTest()
     {
 
-        _service = new CategoriaService(_repository);
+        _service = new CategoriaService(_repository,_dataTableToBulk);
+        
     }
 
     [Fact]
@@ -80,7 +83,7 @@ public class CategoriaServiceTest
     {
         //ARRANGE
         int id = 1;
-        var categoria = Mock.CategoriaCompleta();
+        var categoria = Mock.ListaDeCategorias();
         _repository.BuscarCategoriasPorId(id).Returns(categoria);
 
         //ACT

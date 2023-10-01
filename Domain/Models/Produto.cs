@@ -10,19 +10,18 @@ public class Produto
     public double Valor { get; set; }
     public DateTime DataCriacao { get; set; }
     public DateTime DataAlteracao { get; set; }
-    [JsonProperty("StatusPedido")]
     public bool Status { get; set; }
     public int  QuantidadeEmEstoque { get; set; }
     public int CategoriaId { get; set; }
     public  Categoria Categoria { get; set; }
-    public Guid CodigoDoPedido { get; set; } 
+    public string CodigoDoPedido { get; set; } 
     
     public Produto()
     {
         
     }
 
-    public Produto(int iD, string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status, int quantidadeEmEstoque, int categoriaId, Categoria categoria, Guid codigoDoPedido)
+    public Produto(int iD, string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status, int quantidadeEmEstoque, int categoriaId, string codigoDoPedido)
     {
         ID = iD;
         Nome = nome;
@@ -32,7 +31,6 @@ public class Produto
         Status = status;
         QuantidadeEmEstoque = quantidadeEmEstoque;
         CategoriaId = categoriaId;
-        Categoria = categoria;
         CodigoDoPedido = codigoDoPedido;
     }
 }

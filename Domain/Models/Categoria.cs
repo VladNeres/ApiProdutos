@@ -17,8 +17,9 @@ namespace Domain.ViewlModels
             DataCriacao = DateTime.Now;
         }
 
-        public Categoria(string nome, DateTime dataCriacao, DateTime dataAlteracao, List<Produto> produtos)
+        public Categoria(int id ,string nome, DateTime dataCriacao, DateTime dataAlteracao, List<Produto> produtos)
         {
+            ID = id;
             Nome = nome;
             DataCriacao = dataCriacao;
             DataAlteracao = dataAlteracao;

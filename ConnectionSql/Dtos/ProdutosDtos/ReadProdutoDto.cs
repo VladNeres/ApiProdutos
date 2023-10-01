@@ -10,5 +10,4 @@ public  class ReadProdutoDto
     public bool Status { get; set; }
     public int QuantidadeEmEstoque { get; set; }
     public int CategoriaId { get; set; }
-    public virtual Categoria Categoria { get; set; }
 }
