@@ -1,27 +1,45 @@
-﻿using AutoMapper.Configuration;
-using ConnectionSql.Dtos;
-using ConnectionSql.RepositopriesInterfaces;
+﻿using ConnectionSql.RepositopriesInterfaces;
 using Dapper;
 using Domain.ViewlModels;
-using Microsoft.Extensions.Configuration;
 using System.Data;
+using static Dapper.SqlMapper;
 
 namespace ConnectionSql.Repositories
 {
     public class CategoriaRepository : BaseRepository, ICategoriaRepository
     {
         //outra forma de pegar connection public CategoriaRepository(IConfiguration configuration) : base (configuration.GetConnectionString("MercadoConnection")
-        public CategoriaRepository( string connection) : base(connection) 
+        public CategoriaRepository(string connection) : base(connection)
         {
         }
-        
+
         public async Task<List<Categoria>> BuscarTodasAscategorias()
         {
             try
             {
-                string query = @"Select * From Categorias";
-                var retorno = await QueryAsync<Categoria>(query, commandType: CommandType.Text);
-                return retorno.ToList();
+                string query = @"Select id,
+                                        Nome,
+                                        DataCriacao,
+                                        DataAlteracao
+                                 From Categorias
+                                              
+                                    Select 
+                                          Nome,Valor, DataCriacao, DataAlteracao,Status, QuantidadeEmEstoque, CategoriaId, CodigoDoPedido
+                                    From Produtos";
+                return await MultipleQueryAsync(query, async (GridReader reader) =>
+                {
+                    var listaDeCategorias = (await reader.ReadAsync<Categoria>()).ToList();
+                    var listaDeProdutos = (await reader.ReadAsync<Produto>()).ToList();
+
+                    listaDeCategorias.ForEach(c =>
+                    {
+                        if (c != null)
+                            c.Produtos = listaDeProdutos.Where( p => c.ID == p.CategoriaId).ToList();
+                    });
+
+                    return listaDeCategorias;
+                }, commandType: CommandType.Text);
+
             }
             catch (Exception)
             {
@@ -29,16 +47,37 @@ namespace ConnectionSql.Repositories
                 throw;
             }
         }
-        public async Task<Categoria> BuscarCategoriasPorId(int id)
+        public async Task<List<Categoria>> BuscarCategoriasPorId(int id)
         {
             try
             {
-                DynamicParameters param  = new DynamicParameters();
+                DynamicParameters param = new DynamicParameters();
                 param.Add("@ID", id, DbType.Int32);
 
-                string query = @"Select * From Categorias Where ID = @ID";
-                
-                return await QueryFirstOrDefaultAsync<Categoria>(query, param:param, commandType: CommandType.Text);
+                string query = @"Select ID,    
+                                        Nome,
+                                        DataCriacao,
+                                        DataAlteracao 
+                                From Categorias
+                                Where ID = @ID
+                                    
+                                Select 
+                                      Nome,Valor, DataCriacao, DataAlteracao,Status, QuantidadeEmEstoque, CategoriaId, CodigoDoPedido
+                                From Produtos";
+
+                return await MultipleQueryAsync(query, async (GridReader reader) =>
+                {
+                    var categoria = (await reader.ReadAsync<Categoria>()).ToList();
+                    var produtos = (await reader.ReadAsync<Produto>()).ToList();
+
+                    categoria.ForEach(c =>
+                    {
+                        if (c != null)
+                            c.Produtos = produtos.Where(p => c.ID == p.CategoriaId).ToList();
+                    });
+
+                    return categoria;
+                },param, commandType: CommandType.Text);
             }
             catch (Exception)
             {
@@ -49,13 +88,17 @@ namespace ConnectionSql.Repositories
 
         public async Task<bool> VerificarSeExisteCategoria(string nome)
         {
-                DynamicParameters prameters = new DynamicParameters();
-                prameters.Add("@Nome", nome, DbType.AnsiString);
-                
-               string query = @"Select * From Categorias Where Nome = @Nome";
+            DynamicParameters prameters = new DynamicParameters();
+            prameters.Add("@Nome", nome, DbType.AnsiString);
 
-                var retorno = await QueryFirstOrDefaultAsync<bool>(query,param: prameters, commandType: CommandType.Text);
-                return retorno;
+            string query = @"Select 
+                                        Nome,
+                                        DataCriacao,
+                                        DataAlteracao
+                              From Categorias Where Nome = @Nome";
+
+            var retorno = await QueryFirstOrDefaultAsync<bool>(query, param: prameters, commandType: CommandType.Text);
+            return retorno;
         }
 
 
@@ -67,9 +110,10 @@ namespace ConnectionSql.Repositories
                 DynamicParameters param = new DynamicParameters();
                 param.Add("@Nome", categoria.Nome, DbType.String);
                 param.Add("@DataCriacao", categoria.DataCriacao, DbType.DateTime);
+
                 string query = @"Insert Into Categorias (Nome,DataCriacao) values (@Nome,@DataCriacao)";
-                
-               return  await ExecuteAsync(query, param: param, CommandType.Text);
+
+                return await ExecuteAsync(query, param: param, CommandType.Text);
             }
             catch (Exception)
             {
@@ -86,7 +130,7 @@ namespace ConnectionSql.Repositories
                 param.Add("@ID", id, DbType.Int16);
                 param.Add("@Nome", categoria.Nome, DbType.AnsiString);
                 string query = "AlterarCategoria";
-                return await ExecuteAsync(query,param, CommandType.StoredProcedure);
+                return await ExecuteAsync(query, param, CommandType.StoredProcedure);
 
             }
             catch (Exception)
@@ -96,12 +140,12 @@ namespace ConnectionSql.Repositories
             }
         }
 
-        public async Task<int> DeletarCategoria(int id)
+        public async Task<int> DeletarCategoria(int categoriaId)
         {
             try
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@Id", id, DbType.Int32);
+                param.Add("@Id", categoriaId, DbType.Int32);
 
                 string query = @"Delete  From Categorias WHERE ID = @Id";
 

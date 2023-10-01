@@ -34,6 +34,7 @@ namespace SistemaDeMercado.DependencesInjections
             //services.AddScoped<ICategoriaRepository,CategoriaRepository>();
             services.AddScoped<ICategoriaService, CategoriaService>();
             services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<IDataTableToBulk, DataTableToBulk>();
             return services;
         }
     }

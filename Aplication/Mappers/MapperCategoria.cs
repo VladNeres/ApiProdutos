@@ -1,12 +1,14 @@
-﻿using ConnectionSql.Dtos;
+﻿using Aplication.Mappers.mapperProduto;
+using ConnectionSql.Dtos;
+using ConnectionSql.Dtos.ProdutosDtos;
 using Domain.ViewlModels;
-
+using System.Linq.Expressions;
 
 namespace Aplication.Mappers
 {
     public static class MapperCategoria
     {
-        public static Categoria ParaCategoria(CreateCategoriaDto categoriaDto) =>
+        public static Categoria ParaCategoria(this CreateCategoriaDto categoriaDto) =>
           new Categoria()
           {
               Nome = categoriaDto.Nome
@@ -14,32 +16,33 @@ namespace Aplication.Mappers
 
 
 
-        public static Categoria DeUpdateCategoriaDtoParaCategoria(UpdateCategoriaDto updateCategoria) =>
+        public static Categoria DeUpdateCategoriaDtoParaCategoria(this UpdateCategoriaDto updateCategoria) =>
            new Categoria()
            {
                Nome = updateCategoria.Nome,
                DataAlteracao = DateTime.Now
            };
 
-        public static ReadCategoriaDto ParaReadCategoriaDto(Categoria categoria)
+        public static ReadCategoriaDto ParaReadCategoriaDto(this Categoria categoria)
         {
-            return new ReadCategoriaDto()
-            { 
-                Nome = categoria.Nome,
-                DataCriacao = categoria.DataCriacao,
-                DataAlteracao = categoria.DataCriacao
-            };
+            List<ReadProdutoDto> listaReadProdutos = new List<ReadProdutoDto>();
+            foreach(var p in categoria.Produtos)
+            {
+                listaReadProdutos.Add(p.ParaReadProdutoDto());
+            }
+
+            return new ReadCategoriaDto(categoria.Nome, categoria.DataCriacao, categoria.DataAlteracao, listaReadProdutos);
         }
+
 
         public static IEnumerable<ReadCategoriaDto> ParaListaReadCategoriaDto(IEnumerable<Categoria> categoria)
         {
-            
+            List<ReadCategoriaDto> lista = new List<ReadCategoriaDto>();
             foreach (Categoria c in categoria)
             {
-                if(c.DataAlteracao > DateTime.MinValue )
-                yield return new ReadCategoriaDto() { Nome = c.Nome, DataAlteracao = c.DataAlteracao, DataCriacao = c.DataCriacao };
-                else yield return new ReadCategoriaDto() { Nome =c.Nome , DataCriacao = c.DataCriacao };
+                lista.Add(c.ParaReadCategoriaDto());
             }
+            return lista;
         }
 
 
