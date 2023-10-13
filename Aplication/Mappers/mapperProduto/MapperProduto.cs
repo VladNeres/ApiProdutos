@@ -1,4 +1,5 @@
 ﻿using ConnectionSql.Dtos.ProdutosDtos;
+using Domain.Models;
 using Domain.ViewlModels;
 using Org.BouncyCastle.Asn1.IsisMtt.X509;
 using System;
@@ -21,6 +22,8 @@ namespace Aplication.Mappers.mapperProduto
                 QuantidadeEmEstoque = CreateprodutoDto.QuantidadeEmEstoque,
                 CategoriaId = CreateprodutoDto.CategoriaId,
                 DataCriacao = DateTime.Now,
+                CodigoDoPedido = Guid.NewGuid().ToString(),
+              
             };
         }
 
@@ -61,6 +64,13 @@ namespace Aplication.Mappers.mapperProduto
             };
         }
 
+        public static Paginacao<List<ReadProdutoDto>>ParaPaginacao(Paginacao<List<Produto>> paginacao)
+        {
+            var produtosConvertidos = paginacao.Data.Select(p => ParaReadProdutoDto(p)).ToList();
+            return new Paginacao<List<ReadProdutoDto>>(paginacao.TotalCount, produtosConvertidos,paginacao.CurrentPageNumber,paginacao.TotalPages)
+            {
+            };
+        }
         public static ProdutoType PraraProdutoType(this Produto produto)
         {
             return new ProdutoType(produto.CodigoDoPedido)
@@ -78,6 +88,7 @@ namespace Aplication.Mappers.mapperProduto
             }
             return listaRead;
         }
+
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ConnectionSql.RepositopriesInterfaces;
 using Dapper;
+using Domain.Models;
 using Domain.ViewlModels;
 using System.Data;
 
@@ -10,7 +11,61 @@ namespace ConnectionSql.Repositories
     public class ProdutoRepository : BaseRepository, IProdutoRepository
     {
         public ProdutoRepository(string connection) : base(connection) { }
-        
+
+
+
+
+        public async Task<Paginacao<List<Produto>>> BuscarPedidoPaginada(int? currentPge , int? pageSize )
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                int maxPagexSize = 50;
+                pageSize = pageSize < maxPagexSize ? pageSize : maxPagexSize;
+
+                int skip = (int)(currentPge - 1) * (int)pageSize;
+                int take = (int)pageSize;
+
+                dynamicParameters.Add("@Skip", skip, DbType.Int32);
+                dynamicParameters.Add("@Take", take, DbType.Int32);
+                
+                var query = @" SELECT COUNT(*)
+                               FROM Produtos
+
+                                    SELECT ID,
+                                    NOME,
+                                    VALOR,
+                                    STATUS,
+                                    DATACRIACAO,
+                                    DATAALTERACAO,
+                                    QUANTIDADEEMESTOQUE,
+                                    CategoriaID,
+                                    CodigoDoPedido
+                              FROM Produtos
+							  Order By ID
+                              OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
+                                ";
+                if(skip == null || take == null || (skip == null && take == null))
+                {
+                    query.Replace("Order By ID OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY", " ");
+                }
+
+                return await MultipleQueryAsync<Paginacao<List<Produto>>>(query, async (GridReader reader) =>
+                {
+                    int totalCount = reader.Read<int>().FirstOrDefault();
+                    List<Produto> Produtos = reader.Read<Produto>().ToList();
+
+                    return new Paginacao<List<Produto>>(totalCount, Produtos,(int)currentPge, (int)pageSize);
+                }, dynamicParameters, commandType: CommandType.Text);
+               
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<List<Produto>> BuscarPedidoCompleto()
         {
             try
@@ -27,7 +82,7 @@ namespace ConnectionSql.Repositories
                               FROM Produtos
                                 ";
 
-                var response = await QueryAsync<Produto>(query,MapearObjetos, commandType: CommandType.Text);
+                var response = await QueryAsync<Produto>(query, MapearObjetos, commandType: CommandType.Text);
                 return response.ToList();
             }
             catch (Exception)
@@ -63,13 +118,13 @@ namespace ConnectionSql.Repositories
                             Select ID,NOME,DATACRIACAO, DATAALTERACAO
                                 FROM Categorias";
 
-            return await MultipleQueryAsync(query, async (GridReader reader ) => 
+            return await MultipleQueryAsync(query, async (GridReader reader) =>
             {
                 var produto = await reader.ReadFirstOrDefaultAsync<Produto>();
-                var categoria = await  reader.ReadFirstOrDefaultAsync<Categoria>();
+                var categoria = await reader.ReadFirstOrDefaultAsync<Categoria>();
                 return produto;
-            } ,param: param, commandType: CommandType.Text);
-            
+            }, param: param, commandType: CommandType.Text);
+
         }
 
         public async Task<int> CriarProduto(Produto produto)
@@ -83,7 +138,7 @@ namespace ConnectionSql.Repositories
                 param.Add("@DataCriacao", produto.DataCriacao, DbType.DateTime);
                 param.Add("@QuantidadeEstoque", produto.QuantidadeEmEstoque, DbType.Int32);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
-                param.Add("@CodigoDoPedido",produto.CodigoDoPedido, DbType.AnsiString );
+                param.Add("@CodigoDoPedido", produto.CodigoDoPedido, DbType.AnsiString);
 
                 var query = @"INSERT 
                              INTO produtos (NOME, VALOR, STATUS, DATACRIACAO,  QUANTIDADEEMESTOQUE, CategoriaID, CodigoDoPedido)
@@ -116,8 +171,8 @@ namespace ConnectionSql.Repositories
                             DATAALTERACAO = @DataAlteracao,
                             QUANTIDADEEMESTOQUE = @QuantidadeEstoque
                              WHERE Produtos.ID = @ID";
-                            
-           var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
+
+            var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;
         }
 
@@ -142,12 +197,12 @@ namespace ConnectionSql.Repositories
         public async Task<bool> DeleteProduto(int id)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@ID",id, DbType.Int32);
+            param.Add("@ID", id, DbType.Int32);
 
             string query = @"DELETE FROM Produto 
                              WHERE Produto.Id = @ID";
 
-            var retorno =  await ExecuteAsync(query, param, commandType: CommandType.Text);
+            var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;
         }
 

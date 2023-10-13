@@ -13,7 +13,6 @@ public class Produto
     public bool Status { get; set; }
     public int  QuantidadeEmEstoque { get; set; }
     public int CategoriaId { get; set; }
-    public  Categoria Categoria { get; set; }
     public string CodigoDoPedido { get; set; } 
     
     public Produto()
