@@ -14,7 +14,7 @@ namespace ConnectionSql.RepositopriesInterfaces
         Task<bool> AtualizarProdutoSimplificado(int id, Produto produto);
         Task<bool> DeleteProduto(int id);
 
-        Task<Paginacao<List<Produto>>> BuscarPedidoPaginada(int? currentPge, int? pageSize);
+        Task<Paginacao<List<Produto>>> BuscarPedidoPaginada(int currentPge, int pageSize);
 
 
     }

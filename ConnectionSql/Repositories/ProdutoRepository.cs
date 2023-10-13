@@ -15,7 +15,7 @@ namespace ConnectionSql.Repositories
 
 
 
-        public async Task<Paginacao<List<Produto>>> BuscarPedidoPaginada(int? currentPge , int? pageSize )
+        public async Task<Paginacao<List<Produto>>> BuscarPedidoPaginada(int currentPge , int pageSize )
         {
             try
             {
@@ -45,7 +45,7 @@ namespace ConnectionSql.Repositories
 							  Order By ID
                               OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
                                 ";
-                if(skip == null || take == null || (skip == null && take == null))
+                if(skip == 0 && take == 0)
                 {
                     query.Replace("Order By ID OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY", " ");
                 }
