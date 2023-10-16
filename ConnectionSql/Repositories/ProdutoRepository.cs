@@ -40,14 +40,14 @@ namespace ConnectionSql.Repositories
                                     DATAALTERACAO,
                                     QUANTIDADEEMESTOQUE,
                                     CategoriaID,
-                                    CodigoDoPedido
+                                    CodigoDoProduto
                               FROM Produtos
 							  Order By ID
                               OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
                                 ";
                 if(skip == 0 && take == 0)
                 {
-                    query.Replace("Order By ID OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY", " ");
+                   query = query.Replace("Order By ID\r\n                              OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY", " ");
                 }
 
                 return await MultipleQueryAsync<Paginacao<List<Produto>>>(query, async (GridReader reader) =>
@@ -55,7 +55,7 @@ namespace ConnectionSql.Repositories
                     int totalCount = reader.Read<int>().FirstOrDefault();
                     List<Produto> Produtos = reader.Read<Produto>().ToList();
 
-                    return new Paginacao<List<Produto>>(totalCount, Produtos,(int)currentPge, (int)pageSize);
+                    return new Paginacao<List<Produto>>(totalCount, Produtos,currentPge,pageSize);
                 }, dynamicParameters, commandType: CommandType.Text);
                
             }
@@ -78,7 +78,7 @@ namespace ConnectionSql.Repositories
                                     DATAALTERACAO,
                                     QUANTIDADEEMESTOQUE,
                                     CategoriaID,
-                                    CodigoDoPedido
+                                    CodigoDoProduto
                               FROM Produtos
                                 ";
 
@@ -138,10 +138,10 @@ namespace ConnectionSql.Repositories
                 param.Add("@DataCriacao", produto.DataCriacao, DbType.DateTime);
                 param.Add("@QuantidadeEstoque", produto.QuantidadeEmEstoque, DbType.Int32);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
-                param.Add("@CodigoDoPedido", produto.CodigoDoPedido, DbType.AnsiString);
+                param.Add("@CodigoDoPedido", produto.CodigoDoProduto, DbType.AnsiString);
 
                 var query = @"INSERT 
-                             INTO produtos (NOME, VALOR, STATUS, DATACRIACAO,  QUANTIDADEEMESTOQUE, CategoriaID, CodigoDoPedido)
+                             INTO produtos (NOME, VALOR, STATUS, DATACRIACAO,  QUANTIDADEEMESTOQUE, CategoriaID, CodigoDoProduto)
                             VALUES (@Nome,@Valor,@Status,@DataCriacao, @QuantidadeEstoque, @CategoriaID, @CodigoDoPedido)";
 
                 return await ExecuteAsync(query, param, commandType: CommandType.Text);

@@ -13,7 +13,7 @@ public class Produto
     public bool Status { get; set; }
     public int  QuantidadeEmEstoque { get; set; }
     public int CategoriaId { get; set; }
-    public string CodigoDoPedido { get; set; } 
+    public string CodigoDoProduto { get; set; } 
     
     public Produto()
     {
@@ -30,6 +30,6 @@ public class Produto
         Status = status;
         QuantidadeEmEstoque = quantidadeEmEstoque;
         CategoriaId = categoriaId;
-        CodigoDoPedido = codigoDoPedido;
+        CodigoDoProduto = codigoDoPedido;
     }
 }

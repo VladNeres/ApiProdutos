@@ -22,7 +22,7 @@ namespace Aplication.Mappers.mapperProduto
                 QuantidadeEmEstoque = CreateprodutoDto.QuantidadeEmEstoque,
                 CategoriaId = CreateprodutoDto.CategoriaId,
                 DataCriacao = DateTime.Now,
-                CodigoDoPedido = Guid.NewGuid().ToString(),
+                CodigoDoProduto = Guid.NewGuid().ToString(),
               
             };
         }
@@ -73,9 +73,9 @@ namespace Aplication.Mappers.mapperProduto
         }
         public static ProdutoType PraraProdutoType(this Produto produto)
         {
-            return new ProdutoType(produto.CodigoDoPedido)
+            return new ProdutoType(produto.CodigoDoProduto)
             {
-                CodigoDoPedido = produto.CodigoDoPedido
+                CodigoDoPedido = produto.CodigoDoProduto
             };
         }
 
