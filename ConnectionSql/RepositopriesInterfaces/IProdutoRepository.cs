@@ -9,7 +9,7 @@ namespace ConnectionSql.RepositopriesInterfaces
     {
         Task<List<Produto>> BuscarPedidoCompleto();
         Task<Produto> BuscarPorId(int id);
-        Task<int> CriarProduto(Produto produto);
+        Task<int> CriarProduto(Produto produto, int quantidadeEmEstoque);
         Task<bool> AtualizarProduto(int id, Produto produto);
         Task<bool> AtualizarProdutoSimplificado(int id, Produto produto);
         Task<bool> DeleteProduto(int id);

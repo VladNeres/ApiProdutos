@@ -19,7 +19,6 @@ namespace Aplication.Mappers.mapperProduto
                 Nome = CreateprodutoDto.Nome,
                 Valor = CreateprodutoDto.Valor,
                 Status = CreateprodutoDto.Status,
-                QuantidadeEmEstoque = CreateprodutoDto.QuantidadeEmEstoque,
                 CategoriaId = CreateprodutoDto.CategoriaId,
                 DataCriacao = DateTime.Now,
                 CodigoDoProduto = Guid.NewGuid().ToString(),
@@ -35,7 +34,6 @@ namespace Aplication.Mappers.mapperProduto
                 Valor = updateProduto.Valor,
                 Status = updateProduto.Status,
                 CategoriaId = updateProduto.CategoriaId,
-                QuantidadeEmEstoque = updateProduto.QuantidadeEmEstoque,
                 DataAlteracao = DateTime.Now,
             };
         }
@@ -49,7 +47,6 @@ namespace Aplication.Mappers.mapperProduto
                 Status = produto.Status,
                 DataCriacao = produto.DataCriacao,
                 DataAlteracao = produto.DataAlteracao,
-                QuantidadeEmEstoque = produto.QuantidadeEmEstoque,
                 CategoriaId = produto.CategoriaId
             };
         }

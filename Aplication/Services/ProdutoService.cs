@@ -96,7 +96,7 @@ public class ProdutoService : IProdutoService
 
         var produto = MapperProduto.CreateParaProduto(produtoDto);
         DataTable dataTable = _dataTableToBulk.MakeTable(produto.PraraProdutoType());
-        await _produtoRespository.CriarProduto(produto);
+        await _produtoRespository.CriarProduto(produto, produtoDto.QuantidadeEmEstoque);
         return new MensagemBase<Produto>()
         {
             Message = "Produto criado com sucesso!",

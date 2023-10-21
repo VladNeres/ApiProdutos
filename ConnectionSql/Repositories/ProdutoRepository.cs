@@ -38,7 +38,6 @@ namespace ConnectionSql.Repositories
                                     STATUS,
                                     DATACRIACAO,
                                     DATAALTERACAO,
-                                    QUANTIDADEEMESTOQUE,
                                     CategoriaID,
                                     CodigoDoProduto
                               FROM Produtos
@@ -76,7 +75,6 @@ namespace ConnectionSql.Repositories
                                     STATUS,
                                     DATACRIACAO,
                                     DATAALTERACAO,
-                                    QUANTIDADEEMESTOQUE,
                                     CategoriaID,
                                     CodigoDoProduto
                               FROM Produtos
@@ -110,7 +108,6 @@ namespace ConnectionSql.Repositories
                                     STATUS,
                                     DATACRIACAO,
                                     DATAALTERACAO,
-                                    QUANTIDADEEMESTOQUE,
                                     CategoriaID
                           FROM Produtos 
                           WHERE Id = @ID
@@ -127,24 +124,20 @@ namespace ConnectionSql.Repositories
 
         }
 
-        public async Task<int> CriarProduto(Produto produto)
+        public async Task<int> CriarProduto(Produto produto, int quantidadeEmEstoque)
         {
             try
             {
                 DynamicParameters param = new DynamicParameters();
+                param.Add("@CodigoDoProduto", produto.CodigoDoProduto, DbType.AnsiString);
                 param.Add("@Nome", produto.Nome, DbType.AnsiString);
-                param.Add("@Valor", produto.Valor, DbType.Decimal);
-                param.Add("@Status", produto.Status, DbType.Boolean);
-                param.Add("@DataCriacao", produto.DataCriacao, DbType.DateTime);
-                param.Add("@QuantidadeEstoque", produto.QuantidadeEmEstoque, DbType.Int32);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
-                param.Add("@CodigoDoPedido", produto.CodigoDoProduto, DbType.AnsiString);
+                param.Add("@Valor", produto.Valor, DbType.Decimal);
+                param.Add("@QuantidadeEmEstoque", produto.CategoriaId, DbType.Int32);
 
-                var query = @"INSERT 
-                             INTO produtos (NOME, VALOR, STATUS, DATACRIACAO,  QUANTIDADEEMESTOQUE, CategoriaID, CodigoDoProduto)
-                            VALUES (@Nome,@Valor,@Status,@DataCriacao, @QuantidadeEstoque, @CategoriaID, @CodigoDoPedido)";
-
-                return await ExecuteAsync(query, param, commandType: CommandType.Text);
+                var proc = @"CriarProduto";
+                            
+                return await ExecuteAsync(proc, param, commandType: CommandType.StoredProcedure);
 
             }
             catch (Exception)
@@ -161,7 +154,6 @@ namespace ConnectionSql.Repositories
             param.Add("@Valor", produto.Valor, DbType.Double);
             param.Add("@Status", produto.Status, DbType.Boolean);
             param.Add("@DataAlteracao", produto?.DataAlteracao, DbType.DateTime);
-            param.Add("@QuantidadeEstoque", produto.QuantidadeEmEstoque, DbType.Int32);
             param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
 
             var query = @"Update Produtos  
@@ -169,7 +161,6 @@ namespace ConnectionSql.Repositories
                             VALOR = @Valor,
                             STATUS = @Status,
                             DATAALTERACAO = @DataAlteracao,
-                            QUANTIDADEEMESTOQUE = @QuantidadeEstoque
                              WHERE Produtos.ID = @ID";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
