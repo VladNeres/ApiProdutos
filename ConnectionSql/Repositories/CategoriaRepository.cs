@@ -24,7 +24,7 @@ namespace ConnectionSql.Repositories
                                  From Categorias
                                               
                                     Select 
-                                          Nome,Valor, DataCriacao, DataAlteracao,Status, QuantidadeEmEstoque, CategoriaId, CodigoDoPedido
+                                          Nome,Valor, DataCriacao, DataAlteracao,Status, QuantidadeEmEstoque, CategoriaId, CodigoDoProduto
                                     From Produtos";
                 return await MultipleQueryAsync(query, async (GridReader reader) =>
                 {
@@ -62,7 +62,7 @@ namespace ConnectionSql.Repositories
                                 Where ID = @ID
                                     
                                 Select 
-                                      Nome,Valor, DataCriacao, DataAlteracao,Status, QuantidadeEmEstoque, CategoriaId, CodigoDoPedido
+                                      Nome,Valor, DataCriacao, DataAlteracao,Status, QuantidadeEmEstoque, CategoriaId, CodigoDoProduto
                                 From Produtos";
 
                 return await MultipleQueryAsync(query, async (GridReader reader) =>

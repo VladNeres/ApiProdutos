@@ -4,6 +4,7 @@ using ConnectionSql.Dtos.ProdutosDtos;
 using ConnectionSql.RepositopriesInterfaces;
 using ConnectionSql.Repositories;
 using Domain.Messages;
+using Domain.Models;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
 using System.Data;
@@ -20,6 +21,27 @@ public class ProdutoService : IProdutoService
         this._dataTableToBulk = dataTableToBulk;
     }
 
+
+    public async Task<MensagemBase<Paginacao<List<ReadProdutoDto>>>> BuscarPedidosPaginada(int currentPge, int pageSize)
+    {
+
+        var produtos = await _produtoRespository.BuscarPedidoPaginada(currentPge, pageSize);
+        
+        var response = MapperProduto.ParaPaginacao(produtos);
+        if (response == null)
+            return new MensagemBase<Paginacao<List<ReadProdutoDto>>>()
+            {
+                Message = "Lista vazia",
+                StatusCode = StatusCodes.Status204NoContent
+            };
+        
+        return new MensagemBase<Paginacao<List<ReadProdutoDto>>>()
+        {
+            Object = response,
+            Message = "Busca realizada com sucesso!",
+            StatusCode = StatusCodes.Status200OK
+        };
+    }
 
     public async Task<MensagemBase<List<ReadProdutoDto>>> BuscarPedidos()
     {
@@ -67,13 +89,14 @@ public class ProdutoService : IProdutoService
             return new MensagemBase<Produto>()
             {
                 Message = "O produto ja existe",
+                Object = produtoDto.CreateParaProduto(),
                 StatusCode = StatusCodes.Status400BadRequest
             };
         }
 
         var produto = MapperProduto.CreateParaProduto(produtoDto);
         DataTable dataTable = _dataTableToBulk.MakeTable(produto.PraraProdutoType());
-        await _produtoRespository.CriarProduto(produto);
+        await _produtoRespository.CriarProduto(produto, produtoDto.QuantidadeEmEstoque);
         return new MensagemBase<Produto>()
         {
             Message = "Produto criado com sucesso!",

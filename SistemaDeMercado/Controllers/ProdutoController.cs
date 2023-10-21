@@ -3,7 +3,6 @@ using ConnectionSql.Dtos;
 using ConnectionSql.Dtos.ProdutosDtos;
 using Domain.Messages;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Bcpg;
 
 namespace SistemaDeMercado.Controllers;
 [ApiController]
@@ -18,12 +17,23 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(int), 200)]
-    [ProducesResponseType(typeof(int), 204)]
-    [ProducesResponseType(typeof(int), 500)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     public async Task<IActionResult> GetAll()
     {
         var resopnse = await _produtoService.BuscarPedidos();
+        if (resopnse == null) return NoContent();
+        return Ok(resopnse);
+    }
+    [HttpGet("/Paginada")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    public async Task<IActionResult> BuscaPaginada(int currentPge,int pageSize)
+    {
+        
+        var resopnse = await _produtoService.BuscarPedidosPaginada( currentPge,pageSize);
         if (resopnse == null) return NoContent();
         return Ok(resopnse);
     }

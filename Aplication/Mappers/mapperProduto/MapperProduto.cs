@@ -1,4 +1,5 @@
 ﻿using ConnectionSql.Dtos.ProdutosDtos;
+using Domain.Models;
 using Domain.ViewlModels;
 using Org.BouncyCastle.Asn1.IsisMtt.X509;
 using System;
@@ -18,9 +19,10 @@ namespace Aplication.Mappers.mapperProduto
                 Nome = CreateprodutoDto.Nome,
                 Valor = CreateprodutoDto.Valor,
                 Status = CreateprodutoDto.Status,
-                QuantidadeEmEstoque = CreateprodutoDto.QuantidadeEmEstoque,
                 CategoriaId = CreateprodutoDto.CategoriaId,
                 DataCriacao = DateTime.Now,
+                CodigoDoProduto = Guid.NewGuid().ToString(),
+              
             };
         }
 
@@ -32,7 +34,6 @@ namespace Aplication.Mappers.mapperProduto
                 Valor = updateProduto.Valor,
                 Status = updateProduto.Status,
                 CategoriaId = updateProduto.CategoriaId,
-                QuantidadeEmEstoque = updateProduto.QuantidadeEmEstoque,
                 DataAlteracao = DateTime.Now,
             };
         }
@@ -46,7 +47,6 @@ namespace Aplication.Mappers.mapperProduto
                 Status = produto.Status,
                 DataCriacao = produto.DataCriacao,
                 DataAlteracao = produto.DataAlteracao,
-                QuantidadeEmEstoque = produto.QuantidadeEmEstoque,
                 CategoriaId = produto.CategoriaId
             };
         }
@@ -61,11 +61,18 @@ namespace Aplication.Mappers.mapperProduto
             };
         }
 
+        public static Paginacao<List<ReadProdutoDto>>ParaPaginacao(Paginacao<List<Produto>> paginacao)
+        {
+            var produtosConvertidos = paginacao.Data.Select(p => ParaReadProdutoDto(p)).ToList();
+            return new Paginacao<List<ReadProdutoDto>>(paginacao.TotalCount, produtosConvertidos,paginacao.CurrentPageNumber,paginacao.TotalPages)
+            {
+            };
+        }
         public static ProdutoType PraraProdutoType(this Produto produto)
         {
-            return new ProdutoType(produto.CodigoDoPedido)
+            return new ProdutoType(produto.CodigoDoProduto)
             {
-                CodigoDoPedido = produto.CodigoDoPedido
+                CodigoDoPedido = produto.CodigoDoProduto
             };
         }
 
@@ -78,6 +85,7 @@ namespace Aplication.Mappers.mapperProduto
             }
             return listaRead;
         }
+
 
     }
 }
