@@ -2,10 +2,7 @@
 using ConnectionSql.Dtos;
 using ConnectionSql.Dtos.ProdutosDtos;
 using Domain.Messages;
-using Domain.Models;
-using Domain.ViewlModels;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Bcpg;
 
 namespace SistemaDeMercado.Controllers;
 [ApiController]

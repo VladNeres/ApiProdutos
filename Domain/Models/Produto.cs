@@ -11,7 +11,6 @@ public class Produto
     public DateTime DataCriacao { get; set; }
     public DateTime DataAlteracao { get; set; }
     public bool Status { get; set; }
-    public int  QuantidadeEmEstoque { get; set; }
     public int CategoriaId { get; set; }
     public string CodigoDoProduto { get; set; } 
     
@@ -20,7 +19,7 @@ public class Produto
         
     }
 
-    public Produto(int iD, string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status, int quantidadeEmEstoque, int categoriaId, string codigoDoPedido)
+    public Produto(int iD, string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status,  int categoriaId, string codigoDoPedido)
     {
         ID = iD;
         Nome = nome;
@@ -28,7 +27,6 @@ public class Produto
         DataCriacao = dataCriacao;
         DataAlteracao = dataAlteracao;
         Status = status;
-        QuantidadeEmEstoque = quantidadeEmEstoque;
         CategoriaId = categoriaId;
         CodigoDoProduto = codigoDoPedido;
     }
