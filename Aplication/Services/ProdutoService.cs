@@ -28,7 +28,7 @@ public class ProdutoService : IProdutoService
         var produtos = await _produtoRespository.BuscarPedidoPaginada(currentPge, pageSize);
         
         var response = MapperProduto.ParaPaginacao(produtos);
-        if (response == null)
+        if (response.Data.Count == 0 || response.Data.Any())
             return new MensagemBase<Paginacao<List<ReadProdutoDto>>>()
             {
                 Message = "Lista vazia",
@@ -48,7 +48,7 @@ public class ProdutoService : IProdutoService
 
         var produtos = await _produtoRespository.BuscarPedidoCompleto();
         var response = produtos.ParaListReadProdutoDto();
-        if (response == null)
+        if (response.Count == 0 || !response.Any())
             return new MensagemBase<List<ReadProdutoDto>>()
             {
                 Message = "Lista vazia",
@@ -90,12 +90,11 @@ public class ProdutoService : IProdutoService
             {
                 Message = "O produto ja existe",
                 Object = produtoDto.CreateParaProduto(),
-                StatusCode = StatusCodes.Status400BadRequest
+                StatusCode = StatusCodes.Status422UnprocessableEntity
             };
         }
 
         var produto = MapperProduto.CreateParaProduto(produtoDto);
-        DataTable dataTable = _dataTableToBulk.MakeTable(produto.PraraProdutoType());
         await _produtoRespository.CriarProduto(produto, produtoDto.QuantidadeEmEstoque);
         return new MensagemBase<Produto>()
         {
@@ -171,7 +170,7 @@ public class ProdutoService : IProdutoService
 
     public async Task<MensagemBase<bool>> DeletarProduto(int id)
     {
-        var produto = _produtoRespository.BuscarPorId(id);
+        var produto = await _produtoRespository.BuscarPorId(id);
         if (produto == null)
         {
             return new MensagemBase<bool>()
@@ -182,7 +181,7 @@ public class ProdutoService : IProdutoService
             };
         }
         var produtoDelete = await _produtoRespository.DeleteProduto(id);
-        if (produtoDelete)
+        if (produtoDelete == false)
         {
             return new MensagemBase<bool>()
             {

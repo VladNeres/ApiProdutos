@@ -44,7 +44,7 @@ namespace ConnectionSql.Repositories
 							  Order By ID
                               OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
                                 ";
-                if(skip == 0 && take == 0)
+                if(skip == 0 && take == 0 || skip <= 0)
                 {
                    query = query.Replace("Order By ID\r\n                              OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY", " ");
                 }
@@ -130,10 +130,10 @@ namespace ConnectionSql.Repositories
             {
                 DynamicParameters param = new DynamicParameters();
                 param.Add("@CodigoDoProduto", produto.CodigoDoProduto, DbType.AnsiString);
-                param.Add("@Nome", produto.Nome, DbType.AnsiString);
+                param.Add("@NomeProduto", produto.Nome, DbType.AnsiString);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
                 param.Add("@Valor", produto.Valor, DbType.Decimal);
-                param.Add("@QuantidadeEmEstoque", produto.CategoriaId, DbType.Int32);
+                param.Add("@QuantidadeEmEstoque", quantidadeEmEstoque, DbType.Int32);
 
                 var proc = @"CriarProduto";
                             
