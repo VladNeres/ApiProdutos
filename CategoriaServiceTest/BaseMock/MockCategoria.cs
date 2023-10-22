@@ -5,7 +5,7 @@ using Domain.ViewlModels;
 
 namespace Teste.BaseMock;
 
-public static class Mock
+public static class MockCategoria
 {
 
     public static Categoria CategoriaCompleta()
@@ -43,13 +43,32 @@ public static class Mock
             {
                 Nome = "Teste",
                 DataAlteracao = DateTime.Now,
-                DataCriacao = DateTime.Now.AddMinutes(20)
+                DataCriacao = DateTime.Now.AddMinutes(20),
+                Produtos = new List<Produto>
+                {
+                    new Produto()
+                    {
+                         Nome = "ProdutoTeste1",
+                         CodigoDoProduto = Guid.NewGuid().ToString(),
+                         DataAlteracao = DateTime.Now
+                    }
+                }
+
             },
             new Categoria
             {
                 Nome = "Teste1",
                 DataAlteracao = DateTime.Now.AddDays(1),
-                DataCriacao = DateTime.Now.AddDays(2)
+                DataCriacao = DateTime.Now.AddDays(2),
+                 Produtos = new List<Produto>
+                 {
+                     new Produto()
+                     {
+                         Nome = "ProdutoTeste",
+                         CodigoDoProduto = Guid.NewGuid().ToString(),
+                         DataAlteracao = DateTime.Now
+                     }
+                 }
             }
         };
 
@@ -73,14 +92,32 @@ public static class Mock
                ID = 1,
                Nome = "Teste",
                DataAlteracao = DateTime.Now,
-               DataCriacao = DateTime.Now.AddMinutes(20)
+               DataCriacao = DateTime.Now.AddMinutes(20),
+               Produtos = new List<Produto>
+                 {
+                     new Produto()
+                     {
+                         Nome = "ProdutoTeste",
+                         CodigoDoProduto = Guid.NewGuid().ToString(),
+                         DataAlteracao = DateTime.Now
+                     }
+                 }
            },
            new Categoria()
            {
                ID = 2,
                Nome = "Teste2",
                DataAlteracao = DateTime.Now,
-               DataCriacao = DateTime.Now.AddMinutes(20)
+               DataCriacao = DateTime.Now.AddMinutes(20),
+               Produtos = new List<Produto>
+                 {
+                     new Produto()
+                     {
+                         Nome = "ProdutoTeste",
+                         CodigoDoProduto = Guid.NewGuid().ToString(),
+                         DataAlteracao = DateTime.Now
+                     }
+                 }
            }
         };
     }
