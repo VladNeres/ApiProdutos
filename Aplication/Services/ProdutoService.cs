@@ -1,4 +1,5 @@
-﻿using Aplication.Mappers.mapperProduto;
+﻿using Aplication.ItemServiceHttpClient;
+using Aplication.Mappers.mapperProduto;
 using Aplication.SeviceInterfaces;
 using ConnectionSql.Dtos.ProdutosDtos;
 using ConnectionSql.RepositopriesInterfaces;
@@ -15,10 +16,12 @@ public class ProdutoService : IProdutoService
 {
     private readonly IProdutoRepository _produtoRespository;
     private readonly IDataTableToBulk _dataTableToBulk;
-    public ProdutoService(IProdutoRepository produtoRespository, IDataTableToBulk dataTableToBulk)
+    private readonly IEstoqueService _estoqueService;
+    public ProdutoService(IProdutoRepository produtoRespository, IDataTableToBulk dataTableToBulk, IEstoqueService estoqueService)
     {
         _produtoRespository = produtoRespository;
         this._dataTableToBulk = dataTableToBulk;
+        _estoqueService = estoqueService;
     }
 
 
@@ -157,7 +160,15 @@ public class ProdutoService : IProdutoService
                 StatusCode = StatusCodes.Status400BadRequest
             };
         }
-
+        var response = await _estoqueService.AtualizarEstoque(produtoDto);
+        if(!response.IsSuccessStatusCode)
+        {
+            return new MensagemBase<UpdateProdutoSimplificado>()
+            {
+                Message = "Ops algo deu errado, não foi possivel realizar a alteração do nome no estoque!",
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
+        }
         var produto = MapperProduto.UpdateSimplificadoParaProduto(produtoDto);
         await _produtoRespository.AtualizarProdutoSimplificado(id, produto);
         return new MensagemBase<UpdateProdutoSimplificado>()
