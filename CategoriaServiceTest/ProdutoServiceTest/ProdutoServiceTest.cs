@@ -1,4 +1,5 @@
-﻿using Aplication.Services;
+﻿using Aplication.ItemServiceHttpClient;
+using Aplication.Services;
 using Aplication.SeviceInterfaces;
 using ConnectionSql.Dtos.ProdutosDtos;
 using ConnectionSql.RepositopriesInterfaces;
@@ -17,10 +18,10 @@ namespace Teste.ProdutoServiceTest
         private readonly IProdutoRepository _produtoRespository = Substitute.For<IProdutoRepository>();
         private readonly IDataTableToBulk _dataTableToBulk = Substitute.For<IDataTableToBulk>();
         private readonly IProdutoService _produtoService = Substitute.For<IProdutoService>();
-
+        private readonly IEstoqueService _estoque = Substitute.For<IEstoqueService>();
         public ProdutoServiceTest()
         {
-            _produtoService = new ProdutoService(_produtoRespository, _dataTableToBulk);
+            _produtoService = new ProdutoService(_produtoRespository, _dataTableToBulk, _estoque);
         }
 
 
