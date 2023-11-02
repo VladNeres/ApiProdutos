@@ -157,7 +157,7 @@ public class ProdutoService : IProdutoService
             return new MensagemBase<UpdateProdutoSimplificado>()
             {
                 Message = "O produto não foi encontrado",
-                StatusCode = StatusCodes.Status400BadRequest
+                StatusCode = StatusCodes.Status422UnprocessableEntity
             };
         }
         var response = await _estoqueService.AtualizarEstoque(produtoDto);
