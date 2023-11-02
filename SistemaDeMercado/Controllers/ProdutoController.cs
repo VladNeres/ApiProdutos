@@ -78,7 +78,7 @@ public class ProdutoController : ControllerBase
     public async Task<IActionResult> AtualizarParcialroduto(int id, UpdateProdutoSimplificado produtoSimplificado)
     {
         var response = await _produtoService.AtualizarPedidoSimplificado(id, produtoSimplificado);
-        if (response == null || response.StatusCode == 400) return NoContent();
+        if (response == null || response.StatusCode == StatusCodes.Status422UnprocessableEntity) return BadRequest(response.Message);
         return Ok(response);
     }
 

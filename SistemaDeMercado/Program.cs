@@ -1,4 +1,6 @@
+using Aplication.ItemServiceHttpClient;
 using Microsoft.OpenApi.Models;
+using Refit;
 using SistemaDeMercado.DependencesInjections;
 using System.Reflection;
 
@@ -12,11 +14,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "SistemaDeMercado", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiProdutos", Version = "v1" });
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);  
 });
+
+builder.Services.AddRefitClient<IEstoqueService>().
+                                                    ConfigureHttpClient(c =>
+                                                    {
+                                                        c.BaseAddress = new Uri(builder.Configuration["Uris:Api_Estoque"]);
+                                                        c.Timeout = TimeSpan.FromSeconds(int.Parse(builder.Configuration["Resilience:Timeout:Api"]));
+                                                    });
 
 var app = builder.Build();
 
