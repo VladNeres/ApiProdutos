@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<UserSecretsId>32fba7a4-e509-4210-aee5-aae9c8f7a00f</UserSecretsId>
-	<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
