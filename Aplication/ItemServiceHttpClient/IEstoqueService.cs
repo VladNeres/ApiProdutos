@@ -11,7 +11,7 @@ namespace Aplication.ItemServiceHttpClient
 {
     public interface IEstoqueService
     {
-        [Patch("/AtualizarParcial")]
+        [Patch("/Estoque/AtualizarParcial")]
         Task <HttpResponseMessage> AtualizarEstoque(UpdateProdutoSimplificado produto);
     }
 }
