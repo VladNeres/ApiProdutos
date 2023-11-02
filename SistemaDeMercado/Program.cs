@@ -1,4 +1,6 @@
+using Aplication.ItemServiceHttpClient;
 using Microsoft.OpenApi.Models;
+using Refit;
 using SistemaDeMercado.DependencesInjections;
 using System.Reflection;
 
@@ -17,6 +19,13 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);  
 });
+
+builder.Services.AddRefitClient<IEstoqueService>().
+                                                    ConfigureHttpClient(c =>
+                                                    {
+                                                        c.BaseAddress = new Uri(builder.Configuration["Uris:Api_Estoque"]);
+                                                        c.Timeout = TimeSpan.FromSeconds(int.Parse(builder.Configuration["Resilience:Timeout:Api"]));
+                                                    });
 
 var app = builder.Build();
 
