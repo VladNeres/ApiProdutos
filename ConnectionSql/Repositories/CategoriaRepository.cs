@@ -23,13 +23,14 @@ namespace ConnectionSql.Repositories
                                         DataAlteracao
                                  From Categorias
                                               
-                                    Select 
+                                    SELECT ID 
                                           Nome,
                                           Valor, 
                                           DataCriacao, 
                                           DataAlteracao,
                                           Status, 
-                                          CodigoDoProduto
+                                          CodigoDoProduto,
+                                          CategoriaId
                                     From Produtos";
                 return await MultipleQueryAsync(query, async (GridReader reader) =>
                 {
