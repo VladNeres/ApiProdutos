@@ -7,19 +7,19 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["SistemaDeMercado/SistemaDeMercado.csproj", "SistemaDeMercado/"]
+COPY ["SistemaDeMercado/ApiProdutos.csproj", "SistemaDeMercado/"]
 COPY ["Aplication/Aplication.csproj", "Aplication/"]
 COPY ["ConnectionSql/ConnectionSql.csproj", "ConnectionSql/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
-RUN dotnet restore "SistemaDeMercado/SistemaDeMercado.csproj"
+RUN dotnet restore "SistemaDeMercado/ApiProdutos.csproj"
 COPY . .
 WORKDIR "/src/SistemaDeMercado"
-RUN dotnet build "SistemaDeMercado.csproj" -c Release -o /app/build
+RUN dotnet build "ApiProdutos.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SistemaDeMercado.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ApiProdutos.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SistemaDeMercado.dll"]
+ENTRYPOINT ["dotnet", "ApiProdutos.dll"]
