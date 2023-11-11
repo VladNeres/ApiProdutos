@@ -28,7 +28,7 @@ namespace Teste.ProdutoServiceTest
         [Theory]
         [InlineData(1, 1)]
         [InlineData(0, 0)]
-        public async Task BuscarPedidoPaginado_Quando_BuscarPaginacao_Ou_SemPaginacao_Retornar_200(int paginaAtual, int QuantidadePorPagina)
+        public async Task BuscarPedidoPaginado_Quando_BuscarPaginado_Ou_SemPaginacao_Retornar_200(int paginaAtual, int QuantidadePorPagina)
         {
             //ASSERT
             var produto = MockProduto.GerarListaDeProdutos();

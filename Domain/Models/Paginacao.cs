@@ -19,6 +19,8 @@ namespace Domain.Models
             
             
             TotalPages = (int)Math.Ceiling((double)TotalCount / (double)PageSize);
+            if (TotalPages < 0) TotalPages = 0; 
+
             HasPreviewPage = CurrentPageNumber > 1;
             HasNextPages = CurrentPageNumber < TotalPages;
         }

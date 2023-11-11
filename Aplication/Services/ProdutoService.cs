@@ -31,7 +31,7 @@ public class ProdutoService : IProdutoService
         var produtos = await _produtoRespository.BuscarPedidoPaginada(currentPge, pageSize);
         
         var response = MapperProduto.ParaPaginacao(produtos);
-        if (response.Data.Count == 0 || response.Data.Any())
+        if (response.Data.Count == 0 || !response.Data.Any())
             return new MensagemBase<Paginacao<List<ReadProdutoDto>>>()
             {
                 Message = "Lista vazia",

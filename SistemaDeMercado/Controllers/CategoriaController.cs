@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SistemaDeMercado.Controllers;
 
-[ApiController]
+
 [Route("[controller]")]
-public class CategoriaController : ControllerBase
+public class CategoriaController : Controller
 {
     private readonly ICategoriaService _categoriaService;
 
@@ -22,9 +22,10 @@ public class CategoriaController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [ProducesResponseType(typeof(int), 200)]
-    [ProducesResponseType(typeof(int), 204)]
-    [ProducesResponseType(typeof(int), 500)]
+    [Route("BuscarCategorias")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     public async Task<IActionResult> GetAll()
     {
         MensagemBase<IEnumerable<ReadCategoriaDto>> response = await _categoriaService.BuscarTodasCategorias();
@@ -37,11 +38,11 @@ public class CategoriaController : ControllerBase
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(int), 200)]
-    [ProducesResponseType(typeof(int), 204)]
-    [ProducesResponseType(typeof(int), 400)]
-    [ProducesResponseType(typeof(int), 500)]
+    [HttpGet]
+    [Route("BuscarCategoria/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent,Type = typeof(MensagemBase<ReadCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type =typeof(MensagemBase<ReadCategoriaDto>))]
     public async Task<IActionResult> GetFirstOrDefault(int id)
     {
         var response = await _categoriaService.BuscarCategoriasPorId(id);
@@ -49,8 +50,10 @@ public class CategoriaController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(int), 201)]
-    [ProducesResponseType(typeof(int), 500)]
+    [Route("CriarCategoria")]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MensagemBase<CreateCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(MensagemBase<CreateCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<CreateCategoriaDto>))]
     public async Task<IActionResult> CriarCategoria([FromBody] CreateCategoriaDto categoria)
     {
         try
@@ -67,10 +70,11 @@ public class CategoriaController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    [ProducesResponseType(typeof(int), 204)]
-    [ProducesResponseType(typeof(int), 400)]
-    [ProducesResponseType(typeof(int), 500)]
+    [HttpPut]
+    [Route("Atualizar/{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
     public async Task<IActionResult> Atualizar(int id, [FromBody] UpdateCategoriaDto categoria)
     {
         try
@@ -89,13 +93,15 @@ public class CategoriaController : ControllerBase
     }
 
 
-    [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(int), 204)]
-    [ProducesResponseType(typeof(int), 500)]
+    [HttpDelete]
+    [Route("Deletar/{id}")]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity, Type = typeof(MensagemBase<Categoria>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<Categoria>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<Categoria>))]
     public async Task<IActionResult> DeletarCategoria(int id)
     {
       var response = await _categoriaService.DeletarCategoria(id);
-        if (response.StatusCode == StatusCodes.Status400BadRequest) return BadRequest(response.Message);
+        if (response.StatusCode == StatusCodes.Status422UnprocessableEntity) return BadRequest(response.Message);
         return NoContent();
     }
 }
