@@ -69,15 +69,19 @@ namespace ConnectionSql.Repositories
         {
             try
             {
-                var query = @"SELECT ID,
-                                    NOME,
-                                    VALOR,
-                                    STATUS,
-                                    DATACRIACAO,
-                                    DATAALTERACAO,
-                                    CategoriaID,
-                                    CodigoDoProduto
-                              FROM Produtos
+                var query = @"       SELECT 
+									P.ID,
+                                    P.NOME,
+                                    P.VALOR,
+                                    P.STATUS,
+                                    P.DATACRIACAO,
+                                    P.DATAALTERACAO,
+                                    P.CategoriaID,
+                                    P.CodigoDoProduto,
+									E.Quantidade as QuantidadeEmEstoque
+                              FROM Produtos AS P
+							  Join Estoque as E
+							   ON E.Produto_ID = P.ID
                                 ";
 
                 var response = await QueryAsync<Produto>(query, MapearObjetos, commandType: CommandType.Text);
@@ -167,10 +171,10 @@ namespace ConnectionSql.Repositories
             return retorno > 0;
         }
 
-        public async Task<bool> AtualizarProdutoSimplificado(int id, Produto produto)
+        public async Task<bool> AtualizarProdutoSimplificado(string codigoDoProduto, Produto produto)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@ID", id, DbType.Int32);
+            param.Add("@Codigo", codigoDoProduto, DbType.String);
             param.Add("@Nome", produto.Nome, DbType.AnsiString);
             param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
             param.Add("@DataAlteracao", produto.DataAlteracao, DbType.DateTime);
@@ -179,7 +183,7 @@ namespace ConnectionSql.Repositories
                         Set NOME = @Nome,
                         CategoriaID = @CategoriaID,
                         DataAlteracao = @DataAlteracao
-                        WHERE Produtos.ID = @ID";
+                        WHERE Produtos.CodigoDoProduto = @Codigo";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;

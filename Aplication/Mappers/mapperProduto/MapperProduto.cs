@@ -47,7 +47,8 @@ namespace Aplication.Mappers.mapperProduto
                 Status = produto.Status,
                 DataCriacao = produto.DataCriacao,
                 DataAlteracao = produto.DataAlteracao,
-                CategoriaId = produto.CategoriaId
+                CategoriaId = produto.CategoriaId,
+                QuantidadeEmEstoque = produto.QuantidadeEmEstoque
             };
         }
 

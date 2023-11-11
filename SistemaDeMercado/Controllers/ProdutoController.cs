@@ -71,13 +71,13 @@ public class ProdutoController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPatch("{id}")]
+    [HttpPatch("")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<bool>))]
-    public async Task<IActionResult> AtualizarParcialroduto(int id, UpdateProdutoSimplificado produtoSimplificado)
+    public async Task<IActionResult> AtualizarParcialroduto( UpdateProdutoSimplificado produtoSimplificado)
     {
-        var response = await _produtoService.AtualizarPedidoSimplificado(id, produtoSimplificado);
+        var response = await _produtoService.AtualizarPedidoSimplificado(produtoSimplificado);
         if (response == null || response.StatusCode == StatusCodes.Status422UnprocessableEntity) return BadRequest(response.Message);
         return Ok(response);
     }
