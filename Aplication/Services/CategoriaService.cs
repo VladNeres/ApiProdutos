@@ -110,7 +110,7 @@ namespace Aplication.Services
                 {
                     Message = "categoria nula já existe uma categoria com esse nome",
                     Object = null,
-                    StatusCode = StatusCodes.Status400BadRequest
+                    StatusCode = StatusCodes.Status422UnprocessableEntity
                 };
             }
 
@@ -135,7 +135,7 @@ namespace Aplication.Services
                 {
                     Message = "Categoria não encontrada",
                     Object = null,
-                    StatusCode = StatusCodes.Status400BadRequest
+                    StatusCode = StatusCodes.Status422UnprocessableEntity
                 };
             }
 

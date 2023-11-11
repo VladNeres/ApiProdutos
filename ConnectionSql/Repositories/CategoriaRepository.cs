@@ -23,15 +23,18 @@ namespace ConnectionSql.Repositories
                                         DataAlteracao
                                  From Categorias
                                               
-                                    SELECT ID 
-                                          Nome,
-                                          Valor, 
-                                          DataCriacao, 
-                                          DataAlteracao,
-                                          Status, 
-                                          CodigoDoProduto,
-                                          CategoriaId
-                                    From Produtos";
+                                   SELECT P.ID,
+                                          P.Nome,
+                                          P.Valor, 
+                                          P.DataCriacao, 
+                                          P.DataAlteracao,
+                                          P.Status, 
+                                          P.CodigoDoProduto,
+                                          P.CategoriaId,
+                                          E.Quantidade As QuantidadeEmEstoque
+                                    FROM Produtos AS P
+                                    JOIN Estoque AS E 
+                                    ON E.Produto_ID = P.ID";
                 return await MultipleQueryAsync(query, async (GridReader reader) =>
                 {
                     var listaDeCategorias = (await reader.ReadAsync<Categoria>()).ToList();
