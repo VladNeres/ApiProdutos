@@ -108,7 +108,7 @@ namespace Aplication.Services
             {
                 return new MensagemBase<UpdateCategoriaDto>()
                 {
-                    Message = "categoria nula já existe uma categoria com esse nome",
+                    Message = "Ops! já existe uma categoria com esse nome",
                     Object = null,
                     StatusCode = StatusCodes.Status422UnprocessableEntity
                 };
