@@ -5,9 +5,9 @@ using Domain.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SistemaDeMercado.Controllers;
-[ApiController]
+
 [Route("[controller]")]
-public class ProdutoController : ControllerBase
+public class ProdutoController : Controller
 {
     private readonly IProdutoService _produtoService;
 
@@ -17,6 +17,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpGet]
+    [Route("GetAll")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
@@ -26,19 +27,20 @@ public class ProdutoController : ControllerBase
         if (resopnse == null) return NoContent();
         return Ok(resopnse);
     }
-    [HttpGet("/Paginada")]
+    [HttpGet]
+    [Route("BuscaPaginada")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     public async Task<IActionResult> BuscaPaginada(int currentPge,int pageSize)
     {
-        
         var resopnse = await _produtoService.BuscarPedidosPaginada( currentPge,pageSize);
         if (resopnse == null) return NoContent();
         return Ok(resopnse);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet]
+    [Route("BuscarPedido/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
@@ -50,6 +52,7 @@ public class ProdutoController : ControllerBase
     }
 
     [HttpPost]
+    [Route("CriarProduto")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MensagemBase<CreateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<CreateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError , Type = typeof(MensagemBase<CreateCategoriaDto>))]
@@ -60,7 +63,8 @@ public class ProdutoController : ControllerBase
         return CreatedAtAction(nameof(GetFirstOrDefault), new { ID = response.Object.ID }, response);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
+    [Route("AtualizarProduto/{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
@@ -71,11 +75,12 @@ public class ProdutoController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPatch("")]
+    [HttpPatch]
+    [Route("Atualizar")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<bool>))]
-    public async Task<IActionResult> AtualizarParcialroduto( UpdateProdutoSimplificado produtoSimplificado)
+    public async Task<IActionResult> AtualizarProdutoParcial( UpdateProdutoSimplificado produtoSimplificado)
     {
         var response = await _produtoService.AtualizarPedidoSimplificado(produtoSimplificado);
         if (response == null || response.StatusCode == StatusCodes.Status422UnprocessableEntity) return BadRequest(response.Message);
@@ -83,7 +88,8 @@ public class ProdutoController : ControllerBase
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
+    [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<bool>))]

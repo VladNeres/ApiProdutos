@@ -79,7 +79,7 @@ public class CategoriaServiceTest
     }
 
     [Fact]
-    public async Task CriarCategoria_Se_Existir_CriarCategoria_Retornar204()
+    public async Task CriarCategoria_Se_Ja_Existir_CriarCategoria_Retornar204()
     {
         //ARRANGE
         var categoria = MockCategoria.CategoriaCompleta();
@@ -92,42 +92,26 @@ public class CategoriaServiceTest
         Assert.Contains("A categoria ja existe", response.Message);
     }
 
-    [Fact]
-    public async void AtualizarCategoria_SeExistirCategoria_Retornar204()
-    {
-        //ARRANGE
-        var createCategoria = new UpdateCategoriaDto { Nome = "NomeInexistente"};
-        int id = 1;
-        var listCategoria = MockCategoria.ListaDeCategorias();
-         _repository.BuscarTodasAscategorias().Returns(listCategoria);
-
-        //ACT
-        var response = await _service.AtualizarCategoria(id, createCategoria);
-
-        //ASSERT
-        Assert.Equal(StatusCodes.Status204NoContent, response.StatusCode);
-    }
 
     [Fact]
     public async void AtualizarCategoria_SeExistirCategoria_Retornar400()
     {
         //ARRANGE
-        var createCategoria = new UpdateCategoriaDto { Nome = "NomeInexistente" };
+        var createCategoria = new UpdateCategoriaDto { Nome = "Teste" };
         int id = 1;
-        var listCategoria = MockCategoria.ListaDeCategorias();
-        _repository.BuscarTodasAscategorias().Returns(listCategoria);
+        _repository.VerificarSeExisteCategoria(createCategoria.Nome).Returns(true);
 
         //ACT
         var response = await _service.AtualizarCategoria(id, createCategoria);
 
         //ASSERT
-        Assert.Equal(StatusCodes.Status400BadRequest, response.StatusCode);
-        Assert.Equal("categoria nula já existe uma categoria com esse nome", response.Message);
+        Assert.Equal(StatusCodes.Status422UnprocessableEntity, response.StatusCode);
+        Assert.Equal("Ops! já existe uma categoria com esse nome", response.Message);
 
     }
 
     [Fact]
-    public async void DeletarCategoria_QuandoIDExistir_DeletarERetornar204()
+    public async void DeletarCategoria_QuandoIDExistir_Deletar_Retornar204()
     {
         //ARRANGE
         int id = 1;
