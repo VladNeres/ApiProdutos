@@ -15,4 +15,5 @@
 </ul>
 
    <h2> WORK FLow  </h2>
-  <p> Para organização do projeto escolhi trabalhar com os fundamentos do Git flow, visando organização e maior controle do fluxo de trabalho</p>
+  <p> Para organização do projeto escolhi trabalhar com os fundamentos do Git flow, visando organização e maior controle do fluxo de trabalho <br>
+   </p>
