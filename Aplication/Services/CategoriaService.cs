@@ -21,10 +21,10 @@ namespace Aplication.Services
 
         public async Task<MensagemBase<IEnumerable<ReadCategoriaDto>>> BuscarTodasCategorias()
         {
-            var buascarTodasCategorias = await _repository.BuscarTodasAscategorias();
-            if(buascarTodasCategorias.Count() > 0 || buascarTodasCategorias.Any())
+            var buascarCategorias = await _repository.BuscarTodasAscategorias();
+            if(buascarCategorias.Count() > 0 || buascarCategorias.Any())
             {
-               var response = MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias);
+               var response = MapperCategoria.ParaListaReadCategoriaDto(buascarCategorias);
                 return new MensagemBase<IEnumerable<ReadCategoriaDto>>()
                 {
                     StatusCode = 200,
@@ -39,11 +39,11 @@ namespace Aplication.Services
             };
         }
 
-        public async Task<MensagemBase<ReadCategoriaDto>> BuscarCategoriasPorId(int id)
+        public async Task<MensagemBase<ReadCategoriaDto>> BuscarCategoria(int id)
         {
             try
             {
-                var buascarTodasCategorias = await _repository.BuscarCategoriasPorId(id);
+                var buascarTodasCategorias = await _repository.BuscarCategoria(id);
                 if (buascarTodasCategorias != null)
                 {
                         var response =  MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias).FirstOrDefault();
@@ -127,7 +127,7 @@ namespace Aplication.Services
 
         public async Task <MensagemBase<Categoria>> DeletarCategoria(int id)
         {
-           var categoriaASerDeletada = await BuscarCategoriasPorId(id);
+           var categoriaASerDeletada = await BuscarCategoria(id);
 
             if(categoriaASerDeletada == null)
             {

@@ -25,7 +25,8 @@ namespace Aplication.Mappers
 
         public static ReadCategoriaDto ParaReadCategoriaDto(this Categoria categoria)
         {
-            List<ReadProdutoDto> listaReadProdutos = new List<ReadProdutoDto>();
+            List<ReadProdutoDto?> listaReadProdutos = new List<ReadProdutoDto?>();
+            if(categoria.Produtos != null)
             foreach(var p in categoria.Produtos)
             {
                 listaReadProdutos.Add(p.ParaReadProdutoDto());

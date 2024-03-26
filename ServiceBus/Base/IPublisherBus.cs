@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ServiceBus.Base
+{
+    public interface IPublisherBus
+    {
+        Task Publicar<T> (T message , string routignKey = null) where T : class;
+    }
+}

@@ -45,7 +45,7 @@ public class CategoriaController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type =typeof(MensagemBase<ReadCategoriaDto>))]
     public async Task<IActionResult> GetFirstOrDefault(int id)
     {
-        var response = await _categoriaService.BuscarCategoriasPorId(id);
+        var response = await _categoriaService.BuscarCategoria(id);
         return Ok(response);
     }
 

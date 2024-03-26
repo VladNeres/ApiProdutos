@@ -116,7 +116,7 @@ public class CategoriaServiceTest
         //ARRANGE
         int id = 1;
         var categoria = MockCategoria.ListaDeCategorias();
-        _repository.BuscarCategoriasPorId(id).Returns(categoria);
+        _repository.BuscarCategoria(id).Returns(categoria);
 
         //ACT
         var response = await _service.DeletarCategoria(id);
