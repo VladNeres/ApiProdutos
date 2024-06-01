@@ -13,7 +13,7 @@ namespace ConnectionSql.Repositories
         {
         }
 
-        public async Task<List<Categoria>> BuscarTodasAscategorias()
+        public async Task<IEnumerable<Categoria>> Buscarcategorias()
         {
             try
             {
@@ -23,31 +23,8 @@ namespace ConnectionSql.Repositories
                                         DataAlteracao
                                  From Categorias
                                               
-                                   SELECT P.ID,
-                                          P.Nome,
-                                          P.Valor, 
-                                          P.DataCriacao, 
-                                          P.DataAlteracao,
-                                          P.Status, 
-                                          P.CodigoDoProduto,
-                                          P.CategoriaId,
-                                          E.Quantidade As QuantidadeEmEstoque
-                                    FROM Produtos AS P
-                                    JOIN Estoque AS E 
-                                    ON E.Produto_ID = P.ID";
-                return await MultipleQueryAsync(query, async (GridReader reader) =>
-                {
-                    var listaDeCategorias = (await reader.ReadAsync<Categoria>()).ToList();
-                    var listaDeProdutos = (await reader.ReadAsync<Produto>()).ToList();
-
-                    listaDeCategorias.ForEach(c =>
-                    {
-                        if (c != null)
-                            c.Produtos = listaDeProdutos.Where( p => c.ID == p.CategoriaId).ToList();
-                    });
-
-                    return listaDeCategorias;
-                }, commandType: CommandType.Text);
+                                   ";
+                return await QueryAsync<Categoria>(query, commandType: CommandType.Text);
 
             }
             catch (Exception)
@@ -56,7 +33,7 @@ namespace ConnectionSql.Repositories
                 throw;
             }
         }
-        public async Task<List<Categoria>> BuscarCategoriasPorId(int id)
+        public async Task<List<Categoria>> BuscarCategoria(int id)
         {
             try
             {
@@ -70,9 +47,18 @@ namespace ConnectionSql.Repositories
                                 From Categorias
                                 Where ID = @ID
                                     
-                                Select 
-                                      Nome,Valor, DataCriacao, DataAlteracao,Status, CategoriaId, CodigoDoProduto
-                                From Produtos";
+                                SELECT P.ID,
+                                          P.Nome,
+                                          P.Valor, 
+                                          P.DataCriacao, 
+                                          P.DataAlteracao,
+                                          P.Status, 
+                                          P.CodigoDoProduto,
+                                          P.CategoriaId,
+                                          E.Quantidade As QuantidadeEmEstoque
+                                    FROM Produtos AS P
+                                    JOIN Estoque AS E 
+                                    ON E.Produto_ID = P.ID";
 
                 return await MultipleQueryAsync(query, async (GridReader reader) =>
                 {
@@ -167,5 +153,6 @@ namespace ConnectionSql.Repositories
                 throw;
             }
         }
+       
     }
 }

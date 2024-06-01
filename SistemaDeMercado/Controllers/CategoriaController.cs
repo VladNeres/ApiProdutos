@@ -28,7 +28,7 @@ public class CategoriaController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     public async Task<IActionResult> GetAll()
     {
-        MensagemBase<IEnumerable<ReadCategoriaDto>> response = await _categoriaService.BuscarTodasCategorias();
+        MensagemBase<IEnumerable<ReadCategoriaDto>> response = await _categoriaService.BuscarCategorias();
         if (response == null) return NoContent();
         return Ok(response);
     }
@@ -45,7 +45,7 @@ public class CategoriaController : Controller
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type =typeof(MensagemBase<ReadCategoriaDto>))]
     public async Task<IActionResult> GetFirstOrDefault(int id)
     {
-        var response = await _categoriaService.BuscarCategoriasPorId(id);
+        var response = await _categoriaService.BuscarCategoria(id);
         return Ok(response);
     }
 

@@ -15,13 +15,12 @@ namespace Teste.BaseMock
         {
            return new Produto()
            {
-               ID = 1,
                Nome = "ProdutoTeste",
-               CodigoDoProduto = Guid.NewGuid().ToString(),
+               CodigoDoProduto = Guid.NewGuid(),
                Valor = 123,
                Status = true,
                CategoriaId = 1,
-               DataCriacao = DateTime.Now
+               DataEntrada = DateTime.Now
            };
         }
 
@@ -43,23 +42,23 @@ namespace Teste.BaseMock
             {
                 new Produto()
                 {
-                    ID = 1,
+                    
                     Nome = "ProdutoTeste",
-                    CodigoDoProduto = Guid.NewGuid().ToString(),
+                    CodigoDoProduto = Guid.Parse("CA32D422-50FB-4964-8C87-061362A2D834"),
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,
-                    DataCriacao = DateTime.Now
+                    DataEntrada = DateTime.Now
                 },
                 new Produto()
                 {
-                    ID = 2,
+                    
                     Nome = "ProdutoTeste2",
-                    CodigoDoProduto = Guid.NewGuid().ToString(),
+                    CodigoDoProduto = Guid.Parse("CA32D422-50FB-4964-8C87-061362A2D834"),
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,
-                    DataCriacao = DateTime.Now
+                    DataEntrada = DateTime.Now
                 }
 
             };

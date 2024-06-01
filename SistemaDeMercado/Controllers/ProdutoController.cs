@@ -44,9 +44,9 @@ public class ProdutoController : Controller
     [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
-    public async Task<IActionResult> GetFirstOrDefault(int id)
+    public async Task<IActionResult> GetFirstOrDefault(Guid id)
     {
-        var response = await _produtoService.BuscarPedidosPorId(id);
+        var response = await _produtoService.BuscarProdutosPorId(id);
         if (response == null) return NoContent();
         return Ok(response);
     }
@@ -56,11 +56,11 @@ public class ProdutoController : Controller
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MensagemBase<CreateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<CreateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError , Type = typeof(MensagemBase<CreateCategoriaDto>))]
-    public async Task<IActionResult> Post(CreateProdutoDto categoriaDto)
+    public async Task<IActionResult> Post([FromBody] CreateProdutoDto categoriaDto)
     {
         var response = await _produtoService.CriarProduto(categoriaDto);
         if(response == null) return NoContent();
-        return CreatedAtAction(nameof(GetFirstOrDefault), new { ID = response.Object.ID }, response);
+        return CreatedAtAction(nameof(GetFirstOrDefault), new { ID = response.Object.CodigoDoProduto }, response);
     }
 
     [HttpPut]
@@ -68,7 +68,7 @@ public class ProdutoController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
-    public async Task<IActionResult> AtualizarProduto(int id, UpdateProdutoDto produto)
+    public async Task<IActionResult> AtualizarProduto(Guid id, UpdateProdutoDto produto)
     {
         var response = await _produtoService.AtualizarPedido(id, produto);
         if (response == null) return NoContent(); 
@@ -93,7 +93,7 @@ public class ProdutoController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<bool>))]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var response = await _produtoService.DeletarProduto(id);
         if (response.StatusCode == 400 || response == null)
