@@ -49,8 +49,8 @@ public static class MockCategoria
                     new Produto()
                     {
                          Nome = "ProdutoTeste1",
-                         CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         CodigoDoProduto = Guid.NewGuid(),
+                         DataSaida = DateTime.Now
                     }
                 }
 
@@ -65,8 +65,8 @@ public static class MockCategoria
                      new Produto()
                      {
                          Nome = "ProdutoTeste",
-                         CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         CodigoDoProduto = Guid.NewGuid(),
+                         DataSaida = DateTime.Now
                      }
                  }
             }
@@ -98,8 +98,8 @@ public static class MockCategoria
                      new Produto()
                      {
                          Nome = "ProdutoTeste",
-                         CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         CodigoDoProduto = Guid.NewGuid(),
+                         DataSaida = DateTime.Now
                      }
                  }
            },
@@ -114,8 +114,8 @@ public static class MockCategoria
                      new Produto()
                      {
                          Nome = "ProdutoTeste",
-                         CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         CodigoDoProduto = Guid.NewGuid(),
+                         DataSaida = DateTime.Now
                      }
                  }
            }

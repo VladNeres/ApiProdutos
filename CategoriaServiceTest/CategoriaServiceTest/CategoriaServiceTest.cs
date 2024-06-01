@@ -17,11 +17,10 @@ public class CategoriaServiceTest
 {
     private readonly ICategoriaRepository _repository = Substitute.For<ICategoriaRepository>();
     private readonly ICategoriaService _service = Substitute.For<ICategoriaService>();
-    private readonly IDataTableToBulk _dataTableToBulk = Substitute.For<IDataTableToBulk>();
     public CategoriaServiceTest()
     {
 
-        _service = new CategoriaService(_repository,_dataTableToBulk);
+        _service = new CategoriaService(_repository);
         
     }
 
@@ -31,14 +30,14 @@ public class CategoriaServiceTest
     {
         //ARRANGE
         var lista = MockCategoria.ListaDeCategorias();
-        _repository.BuscarTodasAscategorias().Returns(lista);
+        _repository.Buscarcategorias().Returns(lista);
         
         //ACT
-       var response =  await _service.BuscarTodasCategorias();
+       var response =  await _service.BuscarCategorias();
 
         //ASSERT
         Assert.Equal(200, response.StatusCode);
-        _repository.Received(1).BuscarTodasAscategorias();
+        _repository.Received(1).Buscarcategorias();
     }
 
     [Fact]
@@ -46,16 +45,16 @@ public class CategoriaServiceTest
     {
         //ARRANGE
         var lista = new List<Categoria>();
-        _repository.BuscarTodasAscategorias().Returns(lista);
+        _repository.Buscarcategorias().Returns(lista);
 
         //ACT
-        var response = await _service.BuscarTodasCategorias();
+        var response = await _service.BuscarCategorias();
 
         //ASSERT
 
         Assert.Equal(StatusCodes.Status204NoContent, response.StatusCode);
         Assert.Contains("A lista esta vazia", response.Message);
-        await _repository.Received(1).BuscarTodasAscategorias();
+        await _repository.Received(1).Buscarcategorias();
 
     }
 
@@ -116,7 +115,7 @@ public class CategoriaServiceTest
         //ARRANGE
         int id = 1;
         var categoria = MockCategoria.ListaDeCategorias();
-        _repository.BuscarCategoriasPorId(id).Returns(categoria);
+        _repository.BuscarCategoria(id).Returns(categoria);
 
         //ACT
         var response = await _service.DeletarCategoria(id);

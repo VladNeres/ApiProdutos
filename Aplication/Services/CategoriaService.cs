@@ -12,16 +12,14 @@ namespace Aplication.Services
     public class CategoriaService : ICategoriaService
     {
         private readonly ICategoriaRepository _repository;
-        private readonly IDataTableToBulk _dataTableToBult;
-        public CategoriaService(ICategoriaRepository repository, IDataTableToBulk dataTableToBult)
+        public CategoriaService(ICategoriaRepository repository)
         {
             _repository = repository;
-            _dataTableToBult = dataTableToBult;
         }
 
-        public async Task<MensagemBase<IEnumerable<ReadCategoriaDto>>> BuscarTodasCategorias()
+        public async Task<MensagemBase<IEnumerable<ReadCategoriaDto>>> BuscarCategorias()
         {
-            var buascarTodasCategorias = await _repository.BuscarTodasAscategorias();
+            var buascarTodasCategorias = await _repository.Buscarcategorias();
             if(buascarTodasCategorias.Count() > 0 || buascarTodasCategorias.Any())
             {
                var response = MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias);
@@ -39,11 +37,11 @@ namespace Aplication.Services
             };
         }
 
-        public async Task<MensagemBase<ReadCategoriaDto>> BuscarCategoriasPorId(int id)
+        public async Task<MensagemBase<ReadCategoriaDto>> BuscarCategoria(int id)
         {
             try
             {
-                var buascarTodasCategorias = await _repository.BuscarCategoriasPorId(id);
+                var buascarTodasCategorias = await _repository.BuscarCategoria(id);
                 if (buascarTodasCategorias != null)
                 {
                         var response =  MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias).FirstOrDefault();
@@ -127,7 +125,7 @@ namespace Aplication.Services
 
         public async Task <MensagemBase<Categoria>> DeletarCategoria(int id)
         {
-           var categoriaASerDeletada = await BuscarCategoriasPorId(id);
+           var categoriaASerDeletada = await BuscarCategoria(id);
 
             if(categoriaASerDeletada == null)
             {

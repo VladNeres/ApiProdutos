@@ -32,15 +32,17 @@ namespace ConnectionSql.Repositories
                 var query = @" SELECT COUNT(*)
                                FROM Produtos
 
-                                    SELECT ID,
-                                    NOME,
-                                    VALOR,
-                                    STATUS,
-                                    DATACRIACAO,
-                                    DATAALTERACAO,
-                                    CategoriaID,
-                                    CodigoDoProduto
-                              FROM Produtos
+                                    SELECT 
+                                    P.NOME,
+                                    E.VALOR,
+                                    E.STATUS,
+                                    E.DATAEntrada,
+                                    E.DATASaida,
+                                    P.CategoriaID,
+                                    P.CodigoDoProduto,
+                                    E.Quantidade QuantidadeEmEstoque
+                              FROM Produtos P
+                              JOIN Estoque E ON E.CodigoProduto = CodigoDoProduto
 							  Order By ID
                               OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
                                 ";
@@ -70,18 +72,17 @@ namespace ConnectionSql.Repositories
             try
             {
                 var query = @"       SELECT 
-									P.ID,
-                                    P.NOME,
-                                    P.VALOR,
-                                    P.STATUS,
-                                    P.DATACRIACAO,
-                                    P.DATAALTERACAO,
-                                    P.CategoriaID,
                                     P.CodigoDoProduto,
+                                    P.NOME,
+                                    E.VALOR,
+                                    E.STATUS,
+                                    E.DATAEntrada dataCriacao,
+                                    E.DATASaida dataAlteracao,
+                                    P.CategoriaID,
 									E.Quantidade as QuantidadeEmEstoque
                               FROM Produtos AS P
 							  Join Estoque as E
-							   ON E.Produto_ID = P.ID
+							   ON E.CodigoProduto = P.CodigoDoProduto
                                 ";
 
                 var response = await QueryAsync<Produto>(query, MapearObjetos, commandType: CommandType.Text);
@@ -101,20 +102,21 @@ namespace ConnectionSql.Repositories
 
             return listaDeFiltros;
         }
-        public async Task<Produto> BuscarPorId(int id)
+        public async Task<Produto> BuscarPorId(Guid id)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@ID", id, DbType.Int32);
+            param.Add("@ID", id, DbType.Guid);
 
-            string query = @"SELECT ID,
-                                    NOME,
-                                    VALOR,
-                                    STATUS,
-                                    DATACRIACAO,
-                                    DATAALTERACAO,
-                                    CategoriaID
-                          FROM Produtos 
-                          WHERE Id = @ID
+            string query = @"SELECT 
+                                    P.NOME,
+                                    E.VALOR,
+                                    E.STATUS,
+                                    E.DATAEntrada dataCriacao,
+                                    E.DATASaida dataAlteracao,
+                                    P.CategoriaID
+                          FROM Produtos P
+                          JOIN Estoque E ON E.CodigoProduto = P.CodigoDoProduto
+                          WHERE P.CodigoDoProduto = @ID
                             
                             Select ID,NOME,DATACRIACAO, DATAALTERACAO
                                 FROM Categorias";
@@ -133,7 +135,7 @@ namespace ConnectionSql.Repositories
             try
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@CodigoDoProduto", produto.CodigoDoProduto, DbType.AnsiString);
+                param.Add("@CodigoDoProduto", produto.CodigoDoProduto, DbType.Guid);
                 param.Add("@NomeProduto", produto.Nome, DbType.AnsiString);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
                 param.Add("@Valor", produto.Valor, DbType.Decimal);
@@ -150,14 +152,14 @@ namespace ConnectionSql.Repositories
                 throw;
             }
         }
-        public async Task<bool> AtualizarProduto(int id, Produto produto)
+        public async Task<bool> AtualizarProduto(Guid id, Produto produto)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@ID", id, DbType.Int32);
+            param.Add("@ID", id, DbType.Guid);
             param.Add("@Nome", produto.Nome, DbType.AnsiString);
             param.Add("@Valor", produto.Valor, DbType.Double);
             param.Add("@Status", produto.Status, DbType.Boolean);
-            param.Add("@DataAlteracao", produto?.DataAlteracao, DbType.DateTime);
+            param.Add("@DataAlteracao", produto?.DataSaida, DbType.DateTime);
             param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
 
             var query = @"Update Produtos  
@@ -165,19 +167,19 @@ namespace ConnectionSql.Repositories
                             VALOR = @Valor,
                             STATUS = @Status,
                             DATAALTERACAO = @DataAlteracao,
-                             WHERE Produtos.ID = @ID";
+                             WHERE Produtos.CodigoDoProduto = @ID";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;
         }
 
-        public async Task<bool> AtualizarProdutoSimplificado(string codigoDoProduto, Produto produto)
+        public async Task<bool> AtualizarProdutoSimplificado(Guid codigoDoProduto, Produto produto)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@Codigo", codigoDoProduto, DbType.String);
+            param.Add("@Codigo", codigoDoProduto, DbType.Guid);
             param.Add("@Nome", produto.Nome, DbType.AnsiString);
             param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
-            param.Add("@DataAlteracao", produto.DataAlteracao, DbType.DateTime);
+            param.Add("@DataAlteracao", produto.DataSaida, DbType.DateTime);
 
             var query = @"Update Produtos  
                         Set NOME = @Nome,
@@ -189,13 +191,13 @@ namespace ConnectionSql.Repositories
             return retorno > 0;
         }
 
-        public async Task<bool> DeleteProduto(int id)
+        public async Task<bool> DeleteProduto(Guid id)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@ID", id, DbType.Int32);
+            param.Add("@ID", id, DbType.Guid);
 
-            string query = @"DELETE FROM Produto 
-                             WHERE Produto.Id = @ID";
+            string query = @"DELETE FROM Produto P
+                             WHERE P.CodigoDoProduto = @ID";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;
