@@ -68,7 +68,7 @@ public class ProdutoController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<UpdateCategoriaDto>))]
-    public async Task<IActionResult> AtualizarProduto(Guid id, UpdateProdutoDto produto)
+    public async Task<IActionResult> AtualizarProduto(Guid id,[FromBody] UpdateProdutoDto produto)
     {
         var response = await _produtoService.AtualizarPedido(id, produto);
         if (response == null) return NoContent(); 
@@ -80,7 +80,7 @@ public class ProdutoController : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<bool>))]
-    public async Task<IActionResult> AtualizarProdutoParcial( UpdateProdutoSimplificado produtoSimplificado)
+    public async Task<IActionResult> AtualizarProdutoParcial([FromBody] UpdateProdutoSimplificado produtoSimplificado)
     {
         var response = await _produtoService.AtualizarPedidoSimplificado(produtoSimplificado);
         if (response == null || response.StatusCode == StatusCodes.Status422UnprocessableEntity) return BadRequest(response.Message);
