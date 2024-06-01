@@ -13,7 +13,7 @@ namespace ConnectionSql.Repositories
         {
         }
 
-        public async Task<List<Categoria>> Buscarcategorias()
+        public async Task<IEnumerable<Categoria>> Buscarcategorias()
         {
             try
             {
@@ -24,19 +24,7 @@ namespace ConnectionSql.Repositories
                                  From Categorias
                                               
                                    ";
-                return await MultipleQueryAsync(query, async (GridReader reader) =>
-                {
-                    var listaDeCategorias = (await reader.ReadAsync<Categoria>()).ToList();
-                    var listaDeProdutos = (await reader.ReadAsync<Produto>()).ToList();
-
-                    listaDeCategorias.ForEach(c =>
-                    {
-                        if (c != null)
-                            c.Produtos = listaDeProdutos.Where( p => c.ID == p.CategoriaId).ToList();
-                    });
-
-                    return listaDeCategorias;
-                }, commandType: CommandType.Text);
+                return await QueryAsync<Categoria>(query, commandType: CommandType.Text);
 
             }
             catch (Exception)
@@ -165,5 +153,6 @@ namespace ConnectionSql.Repositories
                 throw;
             }
         }
+       
     }
 }

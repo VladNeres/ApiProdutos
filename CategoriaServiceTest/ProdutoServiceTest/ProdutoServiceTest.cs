@@ -130,7 +130,7 @@ namespace Teste.ProdutoServiceTest
             _produtoRespository.BuscarPedidoCompleto().Returns(produto);
 
 
-            var response = await _produtoService.AtualizarPedido(Arg.Any<int>(), updateProduto);
+            var response = await _produtoService.AtualizarPedido(Arg.Any<Guid>(), updateProduto);
 
             Assert.Equal(StatusCodes.Status400BadRequest, response.StatusCode);
             Assert.Contains("O produto ja existe", response.Message);
@@ -144,7 +144,7 @@ namespace Teste.ProdutoServiceTest
             _produtoRespository.BuscarPedidoCompleto().Returns(produto);
 
 
-            var response = await _produtoService.AtualizarPedido(4, updateProduto);
+            var response = await _produtoService.AtualizarPedido(Guid.NewGuid(), updateProduto);
 
             Assert.Equal(StatusCodes.Status400BadRequest, response.StatusCode);
             Assert.Contains("O produto não foi encontrado", response.Message);
@@ -158,7 +158,7 @@ namespace Teste.ProdutoServiceTest
             _produtoRespository.BuscarPedidoCompleto().Returns(produto);
 
 
-            var response = await _produtoService.AtualizarPedido(1, updateProduto);
+            var response = await _produtoService.AtualizarPedido(Guid.NewGuid(), updateProduto);
 
             Assert.Equal(StatusCodes.Status204NoContent, response.StatusCode);
             Assert.Contains("Produto atualizado com sucesso!", response.Message);
@@ -166,9 +166,9 @@ namespace Teste.ProdutoServiceTest
 
 
         [Theory]
-        [InlineData(3)]
-        [InlineData(1)]
-        public async Task Delete_Quando_Produto_Nao_Encontrado_OuCasoDeErro(int id)
+        [InlineData("AAA")]
+        [InlineData("BBB")]
+        public async Task Delete_Quando_Produto_Nao_Encontrado_OuCasoDeErro(Guid id)
         {
             var produto = MockProduto.ProdutoCompleto();
             _produtoRespository.BuscarPorId(id);
@@ -191,11 +191,11 @@ namespace Teste.ProdutoServiceTest
         public async Task Delete_Quando_Produto_Encontrado()
         {
             var produto = MockProduto.ProdutoCompleto();
-             _produtoRespository.BuscarPorId(1).Returns(produto);
-            _produtoRespository.DeleteProduto(1).Returns(true);
+             _produtoRespository.BuscarPorId(Guid.NewGuid()).Returns(produto);
+            _produtoRespository.DeleteProduto(Guid.NewGuid()).Returns(true);
            
             
-            var response = await _produtoService.DeletarProduto(1);
+            var response = await _produtoService.DeletarProduto(Guid.NewGuid());
 
 
             Assert.Equal(StatusCodes.Status204NoContent, response.StatusCode);

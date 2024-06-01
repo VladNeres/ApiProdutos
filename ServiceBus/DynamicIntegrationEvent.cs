@@ -8,7 +8,7 @@ namespace ServiceBus
 {
     public class DynamicIntegrationEvent
     {
-        public DynamicIntegrationEvent(string eventName, string exchange, string exchangeType, string message)
+        public DynamicIntegrationEvent(string message, string eventName, string exchange = "", string exchangeType = "topic")
         {
             EventName = eventName;
             Exchange = exchange;

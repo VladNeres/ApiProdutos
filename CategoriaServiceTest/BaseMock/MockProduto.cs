@@ -21,7 +21,7 @@ namespace Teste.BaseMock
                Valor = 123,
                Status = true,
                CategoriaId = 1,
-               DataCriacao = DateTime.Now
+               DataEntrada = DateTime.Now
            };
         }
 
@@ -49,7 +49,7 @@ namespace Teste.BaseMock
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,
-                    DataCriacao = DateTime.Now
+                    DataEntrada = DateTime.Now
                 },
                 new Produto()
                 {
@@ -59,7 +59,7 @@ namespace Teste.BaseMock
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,
-                    DataCriacao = DateTime.Now
+                    DataEntrada = DateTime.Now
                 }
 
             };

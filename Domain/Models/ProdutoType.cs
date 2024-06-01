@@ -9,12 +9,12 @@ namespace Domain.ViewlModels
 {
     public class ProdutoType
     {
-        public ProdutoType(string codigoDoPedido)
+        public ProdutoType(Guid codigoDoPedido)
         {
             CodigoDoPedido = codigoDoPedido;
         }
 
-        public ProdutoType(int iD, string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status, int quantidadeEmEstoque, int categoriaId, Categoria categoria, string codigoDoPedido)
+        public ProdutoType(int iD, string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status, int quantidadeEmEstoque, int categoriaId, Categoria categoria, Guid codigoDoPedido)
         {
             ID = iD;
             Nome = nome;
@@ -38,6 +38,6 @@ namespace Domain.ViewlModels
         public int QuantidadeEmEstoque { get; set; }
         public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
-        public string CodigoDoPedido { get; set; }
+        public Guid CodigoDoPedido { get; set; }
     }
 }

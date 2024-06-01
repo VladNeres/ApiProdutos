@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceBus.Base
 {
-    internal interface IPublisherBus
+    public interface IPublisherBus
     {
+        Task Publicar<T>(T message, string routingKey = null) where T : class;
     }
 }

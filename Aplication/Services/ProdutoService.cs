@@ -66,7 +66,7 @@ public class ProdutoService : IProdutoService
         };
     }
 
-    public async Task<MensagemBase<ReadProdutoDto>> BuscarPedidosPorId(int id)
+    public async Task<MensagemBase<ReadProdutoDto>> BuscarProdutosPorId(Guid id)
     {
         var response = await _produtoRespository.BuscarPorId(id);
         var readDto = MapperProduto.ParaReadProdutoDto(response);
@@ -108,7 +108,7 @@ public class ProdutoService : IProdutoService
     }
 
 
-    public async Task<MensagemBase<UpdateProdutoDto>> AtualizarPedido(int id, UpdateProdutoDto produtoDto)
+    public async Task<MensagemBase<UpdateProdutoDto>> AtualizarPedido(Guid id, UpdateProdutoDto produtoDto)
     {
         var existeNaBase = await _produtoRespository.BuscarPedidoCompleto();
         if (existeNaBase.FirstOrDefault(p => p.Nome == produtoDto.Nome) != null)
@@ -120,7 +120,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.ID == id) == null)
+        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto == id) == null)
         {
             return new MensagemBase<UpdateProdutoDto>()
             {
@@ -152,7 +152,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto == produtoDto.CodigoDoProduto) == null)
+        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto.Equals(produtoDto.CodigoDoProduto)) == null)
         {
             return new MensagemBase<UpdateProdutoSimplificado>()
             {
@@ -179,7 +179,7 @@ public class ProdutoService : IProdutoService
         };
     }
 
-    public async Task<MensagemBase<bool>> DeletarProduto(int id)
+    public async Task<MensagemBase<bool>> DeletarProduto(Guid id)
     {
         var produto = await _produtoRespository.BuscarPorId(id);
         if (produto == null)

@@ -50,7 +50,7 @@ public static class MockCategoria
                     {
                          Nome = "ProdutoTeste1",
                          CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         DataSaida = DateTime.Now
                     }
                 }
 
@@ -66,7 +66,7 @@ public static class MockCategoria
                      {
                          Nome = "ProdutoTeste",
                          CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         DataSaida = DateTime.Now
                      }
                  }
             }
@@ -99,7 +99,7 @@ public static class MockCategoria
                      {
                          Nome = "ProdutoTeste",
                          CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         DataSaida = DateTime.Now
                      }
                  }
            },
@@ -115,7 +115,7 @@ public static class MockCategoria
                      {
                          Nome = "ProdutoTeste",
                          CodigoDoProduto = Guid.NewGuid().ToString(),
-                         DataAlteracao = DateTime.Now
+                         DataSaida = DateTime.Now
                      }
                  }
            }

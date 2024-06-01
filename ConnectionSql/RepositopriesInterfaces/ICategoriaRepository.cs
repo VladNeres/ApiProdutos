@@ -6,7 +6,7 @@ namespace ConnectionSql.RepositopriesInterfaces
 {
     public interface ICategoriaRepository
     {
-        Task<List<Categoria>> Buscarcategorias();
+        Task<IEnumerable<Categoria>> Buscarcategorias();
         Task<List<Categoria>> BuscarCategoria(int id);
         Task<int> CriarCategoria(Categoria categoria);
         Task<bool> VerificarSeExisteCategoria(string nome);

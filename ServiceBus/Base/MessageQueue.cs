@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static ServiceBus.RabbitMqEventBusSettings;
 
 namespace ServiceBus.Base
 {
@@ -23,14 +26,18 @@ namespace ServiceBus.Base
         {
             try
             {
-                if(string.IsNullOrEmpty(routingKey))
-                    routingKey - publisherCon
+                if (string.IsNullOrEmpty(routingKey))
+                    routingKey = _publisherConfiguration.RoutingKey;
+
+                var jsonBody = JsonSerializer.Serialize(body);
+                await _dynamicEventBus.PublishDynamicAsync(new DynamicIntegrationEvent(jsonBody, routingKey, _publisherConfiguration.Exchange)).ConfigureAwait(false);
             }
             catch (Exception)
             {
 
-                throw;
+                return;
             }
         } 
+
     }
 }
