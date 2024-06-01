@@ -15,9 +15,8 @@ namespace Teste.BaseMock
         {
            return new Produto()
            {
-               ID = 1,
                Nome = "ProdutoTeste",
-               CodigoDoProduto = Guid.NewGuid().ToString(),
+               CodigoDoProduto = Guid.NewGuid(),
                Valor = 123,
                Status = true,
                CategoriaId = 1,
@@ -43,9 +42,9 @@ namespace Teste.BaseMock
             {
                 new Produto()
                 {
-                    ID = 1,
+                    
                     Nome = "ProdutoTeste",
-                    CodigoDoProduto = Guid.NewGuid().ToString(),
+                    CodigoDoProduto = Guid.NewGuid(),
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,
@@ -53,9 +52,9 @@ namespace Teste.BaseMock
                 },
                 new Produto()
                 {
-                    ID = 2,
+                    
                     Nome = "ProdutoTeste2",
-                    CodigoDoProduto = Guid.NewGuid().ToString(),
+                    CodigoDoProduto = Guid.NewGuid(),
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,
