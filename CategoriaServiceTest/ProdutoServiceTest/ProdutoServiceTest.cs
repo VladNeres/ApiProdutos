@@ -158,7 +158,7 @@ namespace Teste.ProdutoServiceTest
             _produtoRespository.BuscarPedidoCompleto().Returns(produto);
 
 
-            var response = await _produtoService.AtualizarPedido(Guid.NewGuid(), updateProduto);
+            var response = await _produtoService.AtualizarPedido(Guid.Parse("CA32D422-50FB-4964-8C87-061362A2D834"), updateProduto);
 
             Assert.Equal(StatusCodes.Status204NoContent, response.StatusCode);
             Assert.Contains("Produto atualizado com sucesso!", response.Message);
@@ -166,8 +166,8 @@ namespace Teste.ProdutoServiceTest
 
 
         [Theory]
-        [InlineData("AAA")]
-        [InlineData("BBB")]
+        [InlineData("6994C146-95DB-4216-B421-05DA934BB682")]
+        [InlineData("CA32D422-50FB-4964-8C87-061362A2D834")]
         public async Task Delete_Quando_Produto_Nao_Encontrado_OuCasoDeErro(Guid id)
         {
             var produto = MockProduto.ProdutoCompleto();
@@ -191,8 +191,8 @@ namespace Teste.ProdutoServiceTest
         public async Task Delete_Quando_Produto_Encontrado()
         {
             var produto = MockProduto.ProdutoCompleto();
-             _produtoRespository.BuscarPorId(Guid.NewGuid()).Returns(produto);
-            _produtoRespository.DeleteProduto(Guid.NewGuid()).Returns(true);
+             _produtoRespository.BuscarPorId(Arg.Any<Guid>()).Returns(produto);
+            _produtoRespository.DeleteProduto(Arg.Any<Guid>()).Returns(true);
            
             
             var response = await _produtoService.DeletarProduto(Guid.NewGuid());

@@ -44,7 +44,7 @@ namespace Teste.BaseMock
                 {
                     
                     Nome = "ProdutoTeste",
-                    CodigoDoProduto = Guid.NewGuid(),
+                    CodigoDoProduto = Guid.Parse("CA32D422-50FB-4964-8C87-061362A2D834"),
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,
@@ -54,7 +54,7 @@ namespace Teste.BaseMock
                 {
                     
                     Nome = "ProdutoTeste2",
-                    CodigoDoProduto = Guid.NewGuid(),
+                    CodigoDoProduto = Guid.Parse("CA32D422-50FB-4964-8C87-061362A2D834"),
                     Valor = 123,
                     Status = true,
                     CategoriaId = 1,

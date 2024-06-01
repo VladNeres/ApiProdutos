@@ -120,7 +120,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto == id) == null)
+        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto.Equals(id)) == null)
         {
             return new MensagemBase<UpdateProdutoDto>()
             {
