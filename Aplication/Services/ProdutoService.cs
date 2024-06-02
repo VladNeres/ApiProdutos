@@ -143,7 +143,7 @@ public class ProdutoService : IProdutoService
     public async Task<MensagemBase<UpdateProdutoSimplificado>> AtualizarPedidoSimplificado(UpdateProdutoSimplificado produtoDto)
     {
         var existeNaBase = await _produtoRespository.BuscarPedidoCompleto();
-        if (existeNaBase.FirstOrDefault(p => p.Nome == produtoDto.Nome) != null)
+        if (existeNaBase.FirstOrDefault(p => p.Nome.ToUpper() == produtoDto.Nome.ToUpper()) != null)
         {
             return new MensagemBase<UpdateProdutoSimplificado>()
             {
@@ -152,7 +152,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto.Equals(produtoDto.CodigoDoProduto)) == null)
+        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto.Equals(produtoDto.CodigoProduto)) == null)
         {
             return new MensagemBase<UpdateProdutoSimplificado>()
             {
@@ -170,7 +170,7 @@ public class ProdutoService : IProdutoService
             };
         }
         var produto = MapperProduto.UpdateSimplificadoParaProduto(produtoDto);
-        await _produtoRespository.AtualizarProdutoSimplificado(produtoDto.CodigoDoProduto, produto);
+        await _produtoRespository.AtualizarProdutoSimplificado(produtoDto.CodigoProduto, produto);
         return new MensagemBase<UpdateProdutoSimplificado>()
         {
             Message = "Produto atualizado com sucesso!",

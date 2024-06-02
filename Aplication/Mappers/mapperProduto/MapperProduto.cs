@@ -42,6 +42,7 @@ namespace Aplication.Mappers.mapperProduto
         {
             return new ReadProdutoDto()
             {
+               CodigoDoProduto = produto.CodigoDoProduto,
                 Nome = produto.Nome,
                 Valor = produto.Valor,
                 Status = produto.Status,

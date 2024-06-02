@@ -43,7 +43,7 @@ namespace ConnectionSql.Repositories
                                     E.Quantidade QuantidadeEmEstoque
                               FROM Produtos P
                               JOIN Estoque E ON E.CodigoProduto = CodigoDoProduto
-							  Order By ID
+							  Order By P.Nome
                               OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
                                 ";
                 if(skip < 0 && take == 0 || skip <= 0)
@@ -107,7 +107,7 @@ namespace ConnectionSql.Repositories
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id, DbType.Guid);
 
-            string query = @"SELECT 
+            string query = @"SELECT P.CodigoDoProduto,
                                     P.NOME,
                                     E.VALOR,
                                     E.STATUS,
@@ -196,10 +196,9 @@ namespace ConnectionSql.Repositories
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id, DbType.Guid);
 
-            string query = @"DELETE FROM Produto P
-                             WHERE P.CodigoDoProduto = @ID";
+            string procedure = "DeleteProduto";
 
-            var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
+            var retorno = await ExecuteAsync(procedure, param, commandType: CommandType.StoredProcedure);
             return retorno > 0;
         }
 
