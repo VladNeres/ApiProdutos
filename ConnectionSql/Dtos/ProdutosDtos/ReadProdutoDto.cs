@@ -3,6 +3,7 @@ namespace ConnectionSql.Dtos.ProdutosDtos;
 
 public  class ReadProdutoDto
 {
+    public Guid CodigoDoProduto { get; set; }
     public string Nome { get; set; }
     public double Valor { get; set; }
     public DateTime DataCriacao { get; set; }

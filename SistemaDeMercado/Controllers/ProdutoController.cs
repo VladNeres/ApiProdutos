@@ -40,7 +40,7 @@ public class ProdutoController : Controller
     }
 
     [HttpGet]
-    [Route("BuscarPedido/{id}")]
+    [Route("BuscarProduto/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<ReadCategoriaDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<ReadCategoriaDto>))]
@@ -83,13 +83,13 @@ public class ProdutoController : Controller
     public async Task<IActionResult> AtualizarProdutoParcial([FromBody] UpdateProdutoSimplificado produtoSimplificado)
     {
         var response = await _produtoService.AtualizarPedidoSimplificado(produtoSimplificado);
-        if (response == null || response.StatusCode == StatusCodes.Status422UnprocessableEntity) return BadRequest(response.Message);
+        if (response == null || response.StatusCode != StatusCodes.Status200OK) return BadRequest(response.Message);
         return Ok(response);
     }
 
 
     [HttpDelete]
-    [Route("{id}")]
+    [Route("Delete/{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MensagemBase<bool>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MensagemBase<bool>))]
