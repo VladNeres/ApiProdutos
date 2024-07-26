@@ -39,11 +39,11 @@ namespace ConnectionSql.Repositories
                     table.Columns.Add(property.Name, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
                 }
 
-                foreach(T record in records)
+                foreach (T record in records)
                 {
                     object[] values = new object[properties.Length];
 
-                    for (int i = 0 ; i < properties.Length; i++)
+                    for (int i = 0; i < properties.Length; i++)
                     {
                         values[i] = properties[i].GetValue(record, null);
                     }
@@ -64,7 +64,7 @@ namespace ConnectionSql.Repositories
             PropertyInfo[] properties = obj.GetType().GetProperties();
 
             object[] values = new object[properties.Length];
-            for(int i = 0; i < properties.Length;i++)
+            for (int i = 0; i < properties.Length; i++)
             {
                 values[i] = properties[i].GetValue(obj, null);
             }

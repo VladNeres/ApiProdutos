@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServiceBus
+﻿namespace ServiceBus
 {
     public class RabbitMqEventBusSettings
     {
@@ -28,7 +22,7 @@ namespace ServiceBus
 
         public PublisherConfiguration GetPublisherConfiguration(string name)
         {
-            return PublisherConfigurations?.Where(x=> x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
+            return PublisherConfigurations?.Where(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
         }
 
         public class PublisherConfiguration

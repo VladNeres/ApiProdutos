@@ -2,7 +2,6 @@
 using ConnectionSql.Dtos;
 using ConnectionSql.Dtos.ProdutosDtos;
 using Domain.ViewlModels;
-using System.Linq.Expressions;
 
 namespace Aplication.Mappers
 {
@@ -26,14 +25,16 @@ namespace Aplication.Mappers
         public static ReadCategoriaDto ParaReadCategoriaDto(this Categoria categoria)
         {
             List<ReadProdutoDto> listaReadProdutos = new List<ReadProdutoDto>();
-            if(categoria.Produtos != null) 
-            foreach(var p in categoria.Produtos)
-            {
-                listaReadProdutos.Add(p.ParaReadProdutoDto());
-            }
+            if (categoria.Produtos != null)
+                foreach (var p in categoria.Produtos)
+                {
+                    listaReadProdutos.Add(p.ParaReadProdutoDto());
+                }
 
-            return new ReadCategoriaDto(categoria.Nome, categoria.DataCriacao, categoria.DataAlteracao, listaReadProdutos, null);
+            return new ReadCategoriaDto(categoria.Nome, categoria.DataCriacao, categoria.DataAlteracao, listaReadProdutos);
         }
+      
+
 
 
         public static IEnumerable<ReadCategoriaDto> ParaListaReadCategoriaDto(IEnumerable<Categoria> categoria)
@@ -45,7 +46,5 @@ namespace Aplication.Mappers
             }
             return lista;
         }
-
-
     }
 }

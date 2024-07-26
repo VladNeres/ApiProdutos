@@ -1,12 +1,6 @@
 ﻿using ConnectionSql.Dtos.ProdutosDtos;
 using Domain.Models;
 using Domain.ViewlModels;
-using Org.BouncyCastle.Asn1.IsisMtt.X509;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplication.Mappers.mapperProduto
 {
@@ -21,8 +15,8 @@ namespace Aplication.Mappers.mapperProduto
                 Status = CreateprodutoDto.Status,
                 CategoriaId = CreateprodutoDto.CategoriaId,
                 DataEntrada = DateTime.Now,
-                CodigoDoProduto = Guid.NewGuid(),
-              
+                Codigo_Produto = Guid.NewGuid(),
+
             };
         }
 
@@ -42,7 +36,7 @@ namespace Aplication.Mappers.mapperProduto
         {
             return new ReadProdutoDto()
             {
-               CodigoDoProduto = produto.CodigoDoProduto,
+                Codigo_Produto = produto.Codigo_Produto,
                 Nome = produto.Nome,
                 Valor = produto.Valor,
                 Status = produto.Status,
@@ -63,18 +57,18 @@ namespace Aplication.Mappers.mapperProduto
             };
         }
 
-        public static Paginacao<List<ReadProdutoDto>>ParaPaginacao(Paginacao<List<Produto>> paginacao)
+        public static Paginacao<List<ReadProdutoDto>> ParaPaginacao(Paginacao<List<Produto>> paginacao)
         {
             var produtosConvertidos = paginacao.Data.Select(p => ParaReadProdutoDto(p)).ToList();
-            return new Paginacao<List<ReadProdutoDto>>(paginacao.TotalCount, produtosConvertidos,paginacao.CurrentPageNumber,paginacao.TotalPages)
+            return new Paginacao<List<ReadProdutoDto>>(paginacao.TotalCount, produtosConvertidos, paginacao.CurrentPageNumber, paginacao.TotalPages)
             {
             };
         }
         public static ProdutoType PraraProdutoType(this Produto produto)
         {
-            return new ProdutoType(produto.CodigoDoProduto)
+            return new ProdutoType(produto.Codigo_Produto)
             {
-                CodigoDoPedido = produto.CodigoDoProduto
+                CodigoDoPedido = produto.Codigo_Produto
             };
         }
 

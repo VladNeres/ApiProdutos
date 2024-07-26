@@ -2,7 +2,6 @@
 using Aplication.Mappers;
 using ConnectionSql.Dtos;
 using ConnectionSql.RepositopriesInterfaces;
-using ConnectionSql.Repositories;
 using Domain.Messages;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
@@ -20,14 +19,14 @@ namespace Aplication.Services
         public async Task<MensagemBase<IEnumerable<ReadCategoriaDto>>> BuscarCategorias()
         {
             var buascarTodasCategorias = await _repository.Buscarcategorias();
-            if(buascarTodasCategorias.Count() > 0 || buascarTodasCategorias.Any())
+            if (buascarTodasCategorias.Count() > 0 || buascarTodasCategorias.Any())
             {
-               var response = MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias);
+                var response = MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias);
                 return new MensagemBase<IEnumerable<ReadCategoriaDto>>()
                 {
                     StatusCode = 200,
                     Object = response
-               };
+                };
             }
             return new MensagemBase<IEnumerable<ReadCategoriaDto>>()
             {
@@ -44,12 +43,12 @@ namespace Aplication.Services
                 var buascarTodasCategorias = await _repository.BuscarCategoria(id);
                 if (buascarTodasCategorias != null)
                 {
-                        var response =  MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias).FirstOrDefault();
-                        return new MensagemBase<ReadCategoriaDto>()
-                        {
-                            Object = response,
-                            StatusCode = StatusCodes.Status200OK,
-                        };
+                    var response = MapperCategoria.ParaListaReadCategoriaDto(buascarTodasCategorias).FirstOrDefault();
+                    return new MensagemBase<ReadCategoriaDto>()
+                    {
+                        Object = response,
+                        StatusCode = StatusCodes.Status200OK,
+                    };
 
                 }
                 return new MensagemBase<ReadCategoriaDto>()
@@ -65,12 +64,12 @@ namespace Aplication.Services
                 throw;
             }
         }
-        public async Task <MensagemBase<CreateCategoriaDto>> CriarCategoria(CreateCategoriaDto categoriaDto)
+        public async Task<MensagemBase<CreateCategoriaDto>> CriarCategoria(CreateCategoriaDto categoriaDto)
         {
             try
             {
-               var buscaCategorias = await _repository.VerificarSeExisteCategoria(categoriaDto.Nome);
-               
+                var buscaCategorias = await _repository.VerificarSeExisteCategoria(categoriaDto.Nome);
+
 
                 if (buscaCategorias == true)
                     return new MensagemBase<CreateCategoriaDto>()
@@ -80,8 +79,8 @@ namespace Aplication.Services
                         StatusCode = StatusCodes.Status204NoContent
                     };
 
-               Categoria categoria = MapperCategoria.ParaCategoria(categoriaDto);
-               var response = await _repository.CriarCategoria(categoria);
+                Categoria categoria = MapperCategoria.ParaCategoria(categoriaDto);
+                var response = await _repository.CriarCategoria(categoria);
 
                 return new MensagemBase<CreateCategoriaDto>()
                 {
@@ -89,7 +88,7 @@ namespace Aplication.Services
                     Object = categoriaDto,
                     StatusCode = StatusCodes.Status201Created
                 };
-           
+
 
             }
             catch (Exception)
@@ -102,7 +101,7 @@ namespace Aplication.Services
         public async Task<MensagemBase<UpdateCategoriaDto>> AtualizarCategoria(int id, UpdateCategoriaDto updateCategoria)
         {
             bool existeCategoria = await _repository.VerificarSeExisteCategoria(updateCategoria.Nome);
-            if(existeCategoria == true)
+            if (existeCategoria == true)
             {
                 return new MensagemBase<UpdateCategoriaDto>()
                 {
@@ -113,7 +112,7 @@ namespace Aplication.Services
             }
 
             Categoria categoria = MapperCategoria.DeUpdateCategoriaDtoParaCategoria(updateCategoria);
-           int Atualizar =  await _repository.AtualizarCategoria(id, categoria);
+            int Atualizar = await _repository.AtualizarCategoria(id, categoria);
 
             return new MensagemBase<UpdateCategoriaDto>()
             {
@@ -123,11 +122,11 @@ namespace Aplication.Services
 
         }
 
-        public async Task <MensagemBase<Categoria>> DeletarCategoria(int id)
+        public async Task<MensagemBase<Categoria>> DeletarCategoria(int id)
         {
-           var categoriaASerDeletada = await BuscarCategoria(id);
+            var categoriaASerDeletada = await BuscarCategoria(id);
 
-            if(categoriaASerDeletada == null)
+            if (categoriaASerDeletada == null)
             {
                 return new MensagemBase<Categoria>()
                 {

@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Messages
+﻿namespace Domain.Messages
 {
     public class MensagemBase<T>
     {
@@ -28,7 +21,7 @@ namespace Domain.Messages
 
         public MensagemBase()
         {
-            
+
         }
 
     }

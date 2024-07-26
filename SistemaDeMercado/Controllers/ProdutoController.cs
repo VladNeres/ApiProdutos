@@ -60,7 +60,7 @@ public class ProdutoController : Controller
     {
         var response = await _produtoService.CriarProduto(categoriaDto);
         if(response == null) return NoContent();
-        return CreatedAtAction(nameof(GetFirstOrDefault), new { ID = response.Object.CodigoDoProduto }, response);
+        return CreatedAtAction(nameof(GetFirstOrDefault), new { ID = response.Object.Codigo_Produto }, response);
     }
 
     [HttpPut]

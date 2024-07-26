@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teste", "CategoriaServiceTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "X-CrossCuting", "X-CrossCuting", "{BCFE4EF4-4535-4D1C-AA74-3F82BDF72B34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBus", "ServiceBus\ServiceBus.csproj", "{95E0B4BC-6E49-4F68-A396-9C4B0A88040A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceBus", "ServiceBus\ServiceBus.csproj", "{95E0B4BC-6E49-4F68-A396-9C4B0A88040A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

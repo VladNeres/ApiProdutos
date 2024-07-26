@@ -191,15 +191,15 @@ namespace Teste.ProdutoServiceTest
         public async Task Delete_Quando_Produto_Encontrado()
         {
             var produto = MockProduto.ProdutoCompleto();
-             _produtoRespository.BuscarPorId(Arg.Any<Guid>()).Returns(produto);
+            _produtoRespository.BuscarPorId(Arg.Any<Guid>()).Returns(produto);
             _produtoRespository.DeleteProduto(Arg.Any<Guid>()).Returns(true);
-           
-            
+
+
             var response = await _produtoService.DeletarProduto(Guid.NewGuid());
 
 
             Assert.Equal(StatusCodes.Status204NoContent, response.StatusCode);
             Assert.Contains("Produto deletado com sucesso", response.Message);
-        } 
+        }
     }
 }

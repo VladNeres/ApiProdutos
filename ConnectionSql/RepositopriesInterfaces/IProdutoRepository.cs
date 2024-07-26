@@ -1,7 +1,5 @@
-﻿using ConnectionSql.Dtos.ProdutosDtos;
-using Domain.Models;
+﻿using Domain.Models;
 using Domain.ViewlModels;
-using System.Data;
 
 namespace ConnectionSql.RepositopriesInterfaces
 {

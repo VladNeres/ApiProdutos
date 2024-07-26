@@ -8,7 +8,6 @@ using Domain.Messages;
 using Domain.Models;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
-using System.Data;
 
 namespace Aplication.Services;
 
@@ -29,7 +28,7 @@ public class ProdutoService : IProdutoService
     {
 
         var produtos = await _produtoRespository.BuscarPedidoPaginada(currentPge, pageSize);
-        
+
         var response = MapperProduto.ParaPaginacao(produtos);
         if (response.Data.Count == 0 || !response.Data.Any())
             return new MensagemBase<Paginacao<List<ReadProdutoDto>>>()
@@ -37,7 +36,7 @@ public class ProdutoService : IProdutoService
                 Message = "Lista vazia",
                 StatusCode = StatusCodes.Status204NoContent
             };
-        
+
         return new MensagemBase<Paginacao<List<ReadProdutoDto>>>()
         {
             Object = response,
@@ -120,7 +119,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto.Equals(id)) == null)
+        if (existeNaBase.FirstOrDefault(p => p.Codigo_Produto.Equals(id)) == null)
         {
             return new MensagemBase<UpdateProdutoDto>()
             {
@@ -152,7 +151,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.CodigoDoProduto.Equals(produtoDto.CodigoProduto)) == null)
+        if (existeNaBase.FirstOrDefault(p => p.Codigo_Produto.Equals(produtoDto.CodigoProduto)) == null)
         {
             return new MensagemBase<UpdateProdutoSimplificado>()
             {
@@ -161,7 +160,7 @@ public class ProdutoService : IProdutoService
             };
         }
         var response = await _estoqueService.AtualizarEstoque(produtoDto);
-        if(!response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
             return new MensagemBase<UpdateProdutoSimplificado>()
             {

@@ -15,7 +15,7 @@ namespace ConnectionSql.Repositories
 
 
 
-        public async Task<Paginacao<List<Produto>>> BuscarPedidoPaginada(int currentPge , int pageSize )
+        public async Task<Paginacao<List<Produto>>> BuscarPedidoPaginada(int currentPge, int pageSize)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace ConnectionSql.Repositories
 
                 dynamicParameters.Add("@Skip", skip, DbType.Int32);
                 dynamicParameters.Add("@Take", take, DbType.Int32);
-                
+
                 var query = @" SELECT COUNT(*)
                                FROM Produtos
 
@@ -39,16 +39,16 @@ namespace ConnectionSql.Repositories
                                     E.DATAEntrada,
                                     E.DATASaida,
                                     P.CategoriaID,
-                                    P.CodigoDoProduto,
+                                    P.Codigo_Produto,
                                     E.Quantidade QuantidadeEmEstoque
                               FROM Produtos P
-                              JOIN Estoque E ON E.CodigoProduto = CodigoDoProduto
+                              JOIN Estoque E ON E.CodigoProduto = Codigo_Produto
 							  Order By P.Nome
                               OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
                                 ";
-                if(skip < 0 && take == 0 || skip <= 0)
+                if (skip < 0 && take == 0 || skip <= 0)
                 {
-                   query = query.Replace("Order By ID\r\n                              OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY", " ");
+                    query = query.Replace("Order By ID\r\n                              OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY", " ");
                 }
 
                 return await MultipleQueryAsync<Paginacao<List<Produto>>>(query, async (GridReader reader) =>
@@ -56,9 +56,9 @@ namespace ConnectionSql.Repositories
                     int totalCount = reader.Read<int>().FirstOrDefault();
                     List<Produto> Produtos = reader.Read<Produto>().ToList();
 
-                    return new Paginacao<List<Produto>>(totalCount, Produtos,currentPge,pageSize);
+                    return new Paginacao<List<Produto>>(totalCount, Produtos, currentPge, pageSize);
                 }, dynamicParameters, commandType: CommandType.Text);
-               
+
             }
             catch (Exception)
             {
@@ -72,7 +72,7 @@ namespace ConnectionSql.Repositories
             try
             {
                 var query = @"       SELECT 
-                                    P.CodigoDoProduto,
+                                    P.Codigo_Produto,
                                     P.NOME,
                                     E.VALOR,
                                     E.STATUS,
@@ -82,7 +82,7 @@ namespace ConnectionSql.Repositories
 									E.Quantidade as QuantidadeEmEstoque
                               FROM Produtos AS P
 							  Join Estoque as E
-							   ON E.CodigoProduto = P.CodigoDoProduto
+							   ON E.CodigoProduto = P.Codigo_Produto
                                 ";
 
                 var response = await QueryAsync<Produto>(query, MapearObjetos, commandType: CommandType.Text);
@@ -107,7 +107,7 @@ namespace ConnectionSql.Repositories
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id, DbType.Guid);
 
-            string query = @"SELECT P.CodigoDoProduto,
+            string query = @"SELECT P.Codigo_Produto,
                                     P.NOME,
                                     E.VALOR,
                                     E.STATUS,
@@ -115,8 +115,8 @@ namespace ConnectionSql.Repositories
                                     E.DATASaida dataAlteracao,
                                     P.CategoriaID
                           FROM Produtos P
-                          JOIN Estoque E ON E.CodigoProduto = P.CodigoDoProduto
-                          WHERE P.CodigoDoProduto = @ID
+                          JOIN Estoque E ON E.CodigoProduto = P.Codigo_Produto
+                          WHERE P.Codigo_Produto = @ID
                             
                             Select ID,NOME,DATACRIACAO, DATAALTERACAO
                                 FROM Categorias";
@@ -135,14 +135,14 @@ namespace ConnectionSql.Repositories
             try
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@CodigoDoProduto", produto.CodigoDoProduto, DbType.Guid);
+                param.Add("@Codigo_Produto", produto.Codigo_Produto, DbType.Guid);
                 param.Add("@NomeProduto", produto.Nome, DbType.AnsiString);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
                 param.Add("@Valor", produto.Valor, DbType.Decimal);
                 param.Add("@QuantidadeEmEstoque", quantidadeEmEstoque, DbType.Int32);
 
                 var proc = @"CriarProduto";
-                            
+
                 return await ExecuteAsync(proc, param, commandType: CommandType.StoredProcedure);
 
             }
@@ -167,7 +167,7 @@ namespace ConnectionSql.Repositories
                             VALOR = @Valor,
                             STATUS = @Status,
                             DATAALTERACAO = @DataAlteracao,
-                             WHERE Produtos.CodigoDoProduto = @ID";
+                             WHERE Produtos.Codigo_Produto = @ID";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;
@@ -185,7 +185,7 @@ namespace ConnectionSql.Repositories
                         Set NOME = @Nome,
                         CategoriaID = @CategoriaID,
                         DataAlteracao = @DataAlteracao
-                        WHERE Produtos.CodigoDoProduto = @Codigo";
+                        WHERE Produtos.Codigo_Produto = @Codigo";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;

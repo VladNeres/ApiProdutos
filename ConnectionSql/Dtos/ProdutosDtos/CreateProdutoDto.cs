@@ -25,7 +25,7 @@ public class CreateProdutoDto
 
     public CreateProdutoDto()
     {
-            
+
     }
 
     [Required]
@@ -39,6 +39,6 @@ public class CreateProdutoDto
     [Required]
     public int CategoriaId { get; set; }
 
- 
+
 
 }

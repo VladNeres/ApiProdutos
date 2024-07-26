@@ -38,27 +38,27 @@ namespace ConnectionSql.Repositories
             try
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@ID", id, DbType.Int32);
+                param.Add("@Id", id, DbType.Int32);
 
                 string query = @"Select ID,    
                                         Nome,
                                         DataCriacao,
                                         DataAlteracao 
                                 From Categorias
-                                Where ID = @ID
+                                Where id = @Id
                                     
-                                SELECT P.ID,
+                                SELECT 
                                           P.Nome,
                                           P.Valor, 
                                           P.DataCriacao, 
                                           P.DataAlteracao,
                                           P.Status, 
-                                          P.CodigoDoProduto,
+                                          P.Codigo_Produto,
                                           P.CategoriaId,
                                           E.Quantidade As QuantidadeEmEstoque
                                     FROM Produtos AS P
                                     JOIN Estoque AS E 
-                                    ON E.Produto_ID = P.ID";
+                                    ON E.Codigo_Produto = P.Codigo_Produto";
 
                 return await MultipleQueryAsync(query, async (GridReader reader) =>
                 {
@@ -72,7 +72,7 @@ namespace ConnectionSql.Repositories
                     });
 
                     return categoria;
-                },param, commandType: CommandType.Text);
+                }, param, commandType: CommandType.Text);
             }
             catch (Exception)
             {
@@ -153,6 +153,6 @@ namespace ConnectionSql.Repositories
                 throw;
             }
         }
-       
+
     }
 }
