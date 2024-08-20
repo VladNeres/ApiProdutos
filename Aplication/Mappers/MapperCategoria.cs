@@ -31,7 +31,7 @@ namespace Aplication.Mappers
                     listaReadProdutos.Add(p.ParaReadProdutoDto());
                 }
 
-            return new ReadCategoriaDto(categoria.Nome, categoria.DataCriacao, categoria.DataAlteracao, listaReadProdutos);
+            return new ReadCategoriaDto(categoria.ID,categoria.Nome, categoria.DataCriacao, categoria.DataAlteracao, listaReadProdutos);
         }
       
 

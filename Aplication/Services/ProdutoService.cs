@@ -119,7 +119,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.Codigo_Produto.Equals(id)) == null)
+        if (existeNaBase.FirstOrDefault(p => p.CodigoProduto.Equals(id)) == null)
         {
             return new MensagemBase<UpdateProdutoDto>()
             {
@@ -151,7 +151,7 @@ public class ProdutoService : IProdutoService
             };
         }
 
-        if (existeNaBase.FirstOrDefault(p => p.Codigo_Produto.Equals(produtoDto.CodigoProduto)) == null)
+        if (existeNaBase.FirstOrDefault(p => p.CodigoProduto.Equals(produtoDto.CodigoProduto)) == null)
         {
             return new MensagemBase<UpdateProdutoSimplificado>()
             {

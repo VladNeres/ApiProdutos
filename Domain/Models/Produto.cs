@@ -8,7 +8,7 @@ public class Produto
     public DateTime DataSaida { get; set; }
     public bool Status { get; set; }
     public int CategoriaId { get; set; }
-    public Guid Codigo_Produto { get; set; }
+    public Guid CodigoProduto { get; set; }
     public int QuantidadeEmEstoque { get; set; }
 
     public Produto()
@@ -24,6 +24,6 @@ public class Produto
         DataSaida = dataAlteracao;
         Status = status;
         CategoriaId = categoriaId;
-        Codigo_Produto = codigoDoPedido;
+        CodigoProduto = codigoDoPedido;
     }
 }

@@ -2,7 +2,7 @@
 
 public class ReadProdutoDto
 {
-    public Guid Codigo_Produto { get; set; }
+    public Guid CodigoProduto { get; set; }
     public string Nome { get; set; }
     public double Valor { get; set; }
     public DateTime DataCriacao { get; set; }

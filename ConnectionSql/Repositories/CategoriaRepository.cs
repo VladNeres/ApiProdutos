@@ -53,12 +53,12 @@ namespace ConnectionSql.Repositories
                                           P.DataCriacao, 
                                           P.DataAlteracao,
                                           P.Status, 
-                                          P.Codigo_Produto,
+                                          P.CodigoProduto,
                                           P.CategoriaId,
                                           E.Quantidade As QuantidadeEmEstoque
                                     FROM Produtos AS P
                                     JOIN Estoque AS E 
-                                    ON E.Codigo_Produto = P.Codigo_Produto";
+                                    ON E.CodigoProduto = P.CodigoProduto";
 
                 return await MultipleQueryAsync(query, async (GridReader reader) =>
                 {

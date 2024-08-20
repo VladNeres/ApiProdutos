@@ -12,10 +12,10 @@ namespace Aplication.Mappers.mapperProduto
             {
                 Nome = CreateprodutoDto.Nome,
                 Valor = CreateprodutoDto.Valor,
-                Status = CreateprodutoDto.Status,
+                Status = true,
                 CategoriaId = CreateprodutoDto.CategoriaId,
                 DataEntrada = DateTime.Now,
-                Codigo_Produto = Guid.NewGuid(),
+                CodigoProduto = Guid.NewGuid(),
 
             };
         }
@@ -36,7 +36,7 @@ namespace Aplication.Mappers.mapperProduto
         {
             return new ReadProdutoDto()
             {
-                Codigo_Produto = produto.Codigo_Produto,
+                CodigoProduto = produto.CodigoProduto,
                 Nome = produto.Nome,
                 Valor = produto.Valor,
                 Status = produto.Status,
@@ -66,9 +66,9 @@ namespace Aplication.Mappers.mapperProduto
         }
         public static ProdutoType PraraProdutoType(this Produto produto)
         {
-            return new ProdutoType(produto.Codigo_Produto)
+            return new ProdutoType(produto.CodigoProduto)
             {
-                CodigoDoPedido = produto.Codigo_Produto
+                CodigoDoPedido = produto.CodigoProduto
             };
         }
 

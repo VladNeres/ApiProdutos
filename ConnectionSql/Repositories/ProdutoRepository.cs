@@ -34,15 +34,15 @@ namespace ConnectionSql.Repositories
 
                                     SELECT 
                                     P.NOME,
-                                    E.VALOR,
-                                    E.STATUS,
+                                    P.VALOR,
+                                    P.STATUS,
                                     E.DATAEntrada,
                                     E.DATASaida,
                                     P.CategoriaID,
-                                    P.Codigo_Produto,
+                                    P.CodigoProduto,
                                     E.Quantidade QuantidadeEmEstoque
                               FROM Produtos P
-                              JOIN Estoque E ON E.CodigoProduto = Codigo_Produto
+                              JOIN Estoque E ON E.CodigoProduto = CodigoProduto
 							  Order By P.Nome
                               OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY
                                 ";
@@ -68,21 +68,21 @@ namespace ConnectionSql.Repositories
         }
 
         public async Task<List<Produto>> BuscarPedidoCompleto()
-        {
+            {
             try
             {
                 var query = @"       SELECT 
-                                    P.Codigo_Produto,
+                                    P.CodigoProduto,
                                     P.NOME,
-                                    E.VALOR,
-                                    E.STATUS,
-                                    E.DATAEntrada dataCriacao,
-                                    E.DATASaida dataAlteracao,
+                                    P.VALOR,
+                                    P.STATUS,
+                                    E.DATAEntrada,
+                                    E.DATASaida, 
                                     P.CategoriaID,
 									E.Quantidade as QuantidadeEmEstoque
                               FROM Produtos AS P
 							  Join Estoque as E
-							   ON E.CodigoProduto = P.Codigo_Produto
+							   ON E.CodigoProduto = P.CodigoProduto
                                 ";
 
                 var response = await QueryAsync<Produto>(query, MapearObjetos, commandType: CommandType.Text);
@@ -107,16 +107,16 @@ namespace ConnectionSql.Repositories
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id, DbType.Guid);
 
-            string query = @"SELECT P.Codigo_Produto,
+            string query = @"SELECT P.CodigoProduto,
                                     P.NOME,
-                                    E.VALOR,
-                                    E.STATUS,
+                                    P.VALOR,
+                                    P.STATUS,
                                     E.DATAEntrada dataCriacao,
                                     E.DATASaida dataAlteracao,
                                     P.CategoriaID
                           FROM Produtos P
-                          JOIN Estoque E ON E.CodigoProduto = P.Codigo_Produto
-                          WHERE P.Codigo_Produto = @ID
+                          JOIN Estoque E ON E.CodigoProduto = P.CodigoProduto
+                          WHERE P.CodigoProduto = @ID
                             
                             Select ID,NOME,DATACRIACAO, DATAALTERACAO
                                 FROM Categorias";
@@ -135,7 +135,7 @@ namespace ConnectionSql.Repositories
             try
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@Codigo_Produto", produto.Codigo_Produto, DbType.Guid);
+                param.Add("@CodigoProduto", produto.CodigoProduto, DbType.Guid);
                 param.Add("@NomeProduto", produto.Nome, DbType.AnsiString);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
                 param.Add("@Valor", produto.Valor, DbType.Decimal);
@@ -155,19 +155,14 @@ namespace ConnectionSql.Repositories
         public async Task<bool> AtualizarProduto(Guid id, Produto produto)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@ID", id, DbType.Guid);
+            param.Add("@CodigoProduto", id, DbType.Guid);
             param.Add("@Nome", produto.Nome, DbType.AnsiString);
             param.Add("@Valor", produto.Valor, DbType.Double);
             param.Add("@Status", produto.Status, DbType.Boolean);
             param.Add("@DataAlteracao", produto?.DataSaida, DbType.DateTime);
             param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
 
-            var query = @"Update Produtos  
-                        Set NOME = @Nome,
-                            VALOR = @Valor,
-                            STATUS = @Status,
-                            DATAALTERACAO = @DataAlteracao,
-                             WHERE Produtos.Codigo_Produto = @ID";
+            var query = @"AlterarProduto";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;
@@ -176,7 +171,7 @@ namespace ConnectionSql.Repositories
         public async Task<bool> AtualizarProdutoSimplificado(Guid codigoDoProduto, Produto produto)
         {
             DynamicParameters param = new DynamicParameters();
-            param.Add("@Codigo", codigoDoProduto, DbType.Guid);
+            param.Add("@CodigoProduto", codigoDoProduto, DbType.Guid);
             param.Add("@Nome", produto.Nome, DbType.AnsiString);
             param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
             param.Add("@DataAlteracao", produto.DataSaida, DbType.DateTime);
@@ -185,7 +180,7 @@ namespace ConnectionSql.Repositories
                         Set NOME = @Nome,
                         CategoriaID = @CategoriaID,
                         DataAlteracao = @DataAlteracao
-                        WHERE Produtos.Codigo_Produto = @Codigo";
+                        WHERE Produtos.CodigoProduto = @CodigoProduto";
 
             var retorno = await ExecuteAsync(query, param, commandType: CommandType.Text);
             return retorno > 0;
@@ -196,7 +191,7 @@ namespace ConnectionSql.Repositories
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id, DbType.Guid);
 
-            string procedure = "DeleteProduto";
+            string procedure = @"DeleteProduto";
 
             var retorno = await ExecuteAsync(procedure, param, commandType: CommandType.StoredProcedure);
             return retorno > 0;
