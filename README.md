@@ -26,7 +26,7 @@
 <ol>
 <li> Baixe o docker desktop </li>
 <li> Baixe o git em sua maquina </li>
-<li> Crie uma nova pasta em sua maquina.</li>
+<li> Crie uma nova pasta em sua maquina chamada  <strong> repos. </strong></li>
 <li> Dentro dessa pasta abra um cmd de sua preferencia e clone os projetos a baixo </li>
 <li> APIs, (<a href="https://github.com/VladNeres/ApiProdutos"> APIProduto </a>) e a (<a href="https://github.com/VladNeres/ApiEstoque"> APIEstoque</a>) </li>
 <li> Abra um cmd de sua preferencia e navegue até a pasta onde voce clonou as APIs e entre em uma das duas pastas (ApiProdutos, ApiEstoque)</li>
