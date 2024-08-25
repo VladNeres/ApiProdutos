@@ -1,9 +1,8 @@
-﻿using Domain.ViewlModels;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ConnectionSql.Dtos.ProdutosDtos
 {
-    public  class UpdateProdutoDto
+    public class UpdateProdutoDto
     {
         [Required]
         public string Nome { get; set; }

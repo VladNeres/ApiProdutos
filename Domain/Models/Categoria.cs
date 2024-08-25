@@ -5,10 +5,10 @@ namespace Domain.ViewlModels
     public class Categoria
     {
         [Key]
-        public  int ID { get; set; }
+        public int ID { get; set; }
         [Required(ErrorMessage = "O Campo nome é obrigatório")]
         public string Nome { get; set; }
-        public DateTime DataCriacao { get; set; } 
+        public DateTime DataCriacao { get; set; }
         public DateTime DataAlteracao { get; set; }
         public List<Produto> Produtos { get; set; }
 
@@ -17,7 +17,7 @@ namespace Domain.ViewlModels
             DataCriacao = DateTime.Now;
         }
 
-        public Categoria(int id ,string nome, DateTime dataCriacao, DateTime dataAlteracao, List<Produto> produtos)
+        public Categoria(int id, string nome, DateTime dataCriacao, DateTime dataAlteracao, List<Produto> produtos)
         {
             ID = id;
             Nome = nome;

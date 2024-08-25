@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
-
-namespace Domain.ViewlModels;
+﻿namespace Domain.ViewlModels;
 
 public class Produto
 {
@@ -11,15 +8,15 @@ public class Produto
     public DateTime DataSaida { get; set; }
     public bool Status { get; set; }
     public int CategoriaId { get; set; }
-    public Guid CodigoDoProduto { get; set; }
+    public Guid CodigoProduto { get; set; }
     public int QuantidadeEmEstoque { get; set; }
 
     public Produto()
     {
-        
+
     }
 
-    public Produto( string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status,  int categoriaId, Guid codigoDoPedido)
+    public Produto(string nome, double valor, DateTime dataCriacao, DateTime dataAlteracao, bool status, int categoriaId, Guid codigoDoPedido)
     {
         Nome = nome;
         Valor = valor;
@@ -27,6 +24,6 @@ public class Produto
         DataSaida = dataAlteracao;
         Status = status;
         CategoriaId = categoriaId;
-        CodigoDoProduto = codigoDoPedido;
+        CodigoProduto = codigoDoPedido;
     }
 }

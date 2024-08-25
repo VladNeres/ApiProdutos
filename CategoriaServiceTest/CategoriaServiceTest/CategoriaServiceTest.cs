@@ -1,10 +1,7 @@
 using Aplication.interfaces;
-using Aplication.Mappers;
 using Aplication.Services;
 using ConnectionSql.Dtos;
 using ConnectionSql.RepositopriesInterfaces;
-using ConnectionSql.Repositories;
-using Domain.Messages;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
@@ -21,19 +18,19 @@ public class CategoriaServiceTest
     {
 
         _service = new CategoriaService(_repository);
-        
+
     }
 
-  
+
     [Fact]
     public async Task BuscarTodasCategorias_Quando_Tiver_Categorias_No_Banco_Retornar_200()
     {
         //ARRANGE
         var lista = MockCategoria.ListaDeCategorias();
         _repository.Buscarcategorias().Returns(lista);
-        
+
         //ACT
-       var response =  await _service.BuscarCategorias();
+        var response = await _service.BuscarCategorias();
 
         //ASSERT
         Assert.Equal(200, response.StatusCode);
@@ -83,8 +80,8 @@ public class CategoriaServiceTest
         //ARRANGE
         var categoria = MockCategoria.CategoriaCompleta();
         var categoriaDto = MockCategoria.CreateCategoriaDto();
-         _repository.CriarCategoria(categoria);
-         _repository.VerificarSeExisteCategoria(categoria.Nome).Returns(true);
+        _repository.CriarCategoria(categoria);
+        _repository.VerificarSeExisteCategoria(categoria.Nome).Returns(true);
         //ACT
         var response = await _service.CriarCategoria(categoriaDto);
         Assert.Equal(StatusCodes.Status204NoContent, response.StatusCode);

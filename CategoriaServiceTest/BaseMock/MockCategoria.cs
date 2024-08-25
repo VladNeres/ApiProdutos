@@ -49,7 +49,7 @@ public static class MockCategoria
                     new Produto()
                     {
                          Nome = "ProdutoTeste1",
-                         CodigoDoProduto = Guid.NewGuid(),
+                         CodigoProduto = Guid.NewGuid(),
                          DataSaida = DateTime.Now
                     }
                 }
@@ -65,16 +65,16 @@ public static class MockCategoria
                      new Produto()
                      {
                          Nome = "ProdutoTeste",
-                         CodigoDoProduto = Guid.NewGuid(),
+                         CodigoProduto = Guid.NewGuid(),
                          DataSaida = DateTime.Now
                      }
                  }
             }
         };
 
-      var  response = MapperCategoria.ParaListaReadCategoriaDto(listaCategoria);
+        var response = MapperCategoria.ParaListaReadCategoriaDto(listaCategoria);
 
-        return new MensagemBase<IEnumerable<ReadCategoriaDto>> 
+        return new MensagemBase<IEnumerable<ReadCategoriaDto>>
         {
             Message = "Teste",
             Object = response,
@@ -98,7 +98,7 @@ public static class MockCategoria
                      new Produto()
                      {
                          Nome = "ProdutoTeste",
-                         CodigoDoProduto = Guid.NewGuid(),
+                         CodigoProduto = Guid.NewGuid(),
                          DataSaida = DateTime.Now
                      }
                  }
@@ -114,7 +114,7 @@ public static class MockCategoria
                      new Produto()
                      {
                          Nome = "ProdutoTeste",
-                         CodigoDoProduto = Guid.NewGuid(),
+                         CodigoProduto = Guid.NewGuid(),
                          DataSaida = DateTime.Now
                      }
                  }
@@ -124,4 +124,4 @@ public static class MockCategoria
 
 
 }
-    
+

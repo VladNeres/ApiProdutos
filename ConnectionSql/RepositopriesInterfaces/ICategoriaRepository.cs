@@ -1,6 +1,4 @@
-﻿using ConnectionSql.Dtos;
-using Domain.Messages;
-using Domain.ViewlModels;
+﻿using Domain.ViewlModels;
 
 namespace ConnectionSql.RepositopriesInterfaces
 {
