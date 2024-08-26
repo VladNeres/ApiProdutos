@@ -17,7 +17,7 @@ services:
   apiprodutos:
     build: 
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     image: apiprodutos:1.0
     networks:
       - compose-bridge
@@ -28,8 +28,8 @@ services:
 
   apiestoque:
     build: 
-      context: ./ApiEstoque
-      dockerfile: dockerfile
+      context: ..\ApiEstoque
+      dockerfile: Dockerfile
     image: apiestoque:1.0
     container_name: apiestoque
     networks:
