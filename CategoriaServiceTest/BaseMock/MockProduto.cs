@@ -24,7 +24,6 @@ namespace Teste.BaseMock
             {
                 Nome = "CreateTeste",
                 CategoriaId = 1,
-                Status = true,
                 QuantidadeEmEstoque = 1,
                 Valor = 1234
             };

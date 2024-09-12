@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ConnectionSql\ConnectionSql.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\ServiceBus\ServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

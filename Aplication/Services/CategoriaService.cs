@@ -5,6 +5,7 @@ using ConnectionSql.RepositopriesInterfaces;
 using Domain.Messages;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
+using ServiceBus.Interfaces;
 
 namespace Aplication.Services
 {
@@ -28,6 +29,8 @@ namespace Aplication.Services
                     Object = response
                 };
             }
+
+            
             return new MensagemBase<IEnumerable<ReadCategoriaDto>>()
             {
                 Message = "A lista esta vazia",

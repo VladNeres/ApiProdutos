@@ -1,0 +1,6 @@
+@RabbitMensagemController_HostAddress = http://localhost:5171
+
+GET {{RabbitMensagemController_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

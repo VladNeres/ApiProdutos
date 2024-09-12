@@ -3,6 +3,8 @@ using Aplication.Services;
 using Aplication.SeviceInterfaces;
 using ConnectionSql.RepositopriesInterfaces;
 using ConnectionSql.Repositories;
+using ServiceBus;
+using ServiceBus.Interfaces;
 
 namespace SistemaDeMercado.DependencesInjections
 {
@@ -32,9 +34,10 @@ namespace SistemaDeMercado.DependencesInjections
 
             //Scopped
             //services.AddScoped<ICategoriaRepository,CategoriaRepository>();
-            services.AddScoped<ICategoriaService, CategoriaService>();
-            services.AddScoped<IProdutoService, ProdutoService>();
-            services.AddScoped<IDataTableToBulk, DataTableToBulk>();
+            services.AddSingleton<ICategoriaService, CategoriaService>();
+            services.AddSingleton<IProdutoService, ProdutoService>();
+            services.AddSingleton<IDataTableToBulk, DataTableToBulk>();
+            services.AddTransient<IRabbitMensagemRepositori, RabbitMensagemRepository>();
             return services;
         }
     }
