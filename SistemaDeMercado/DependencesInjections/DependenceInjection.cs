@@ -4,7 +4,10 @@ using Aplication.SeviceInterfaces;
 using ConnectionSql.RepositopriesInterfaces;
 using ConnectionSql.Repositories;
 using ServiceBus;
+using ServiceBus.Base;
 using ServiceBus.Interfaces;
+using ServiceBus.Publisher;
+using System.Configuration;
 
 namespace SistemaDeMercado.DependencesInjections
 {
@@ -37,7 +40,11 @@ namespace SistemaDeMercado.DependencesInjections
             services.AddSingleton<ICategoriaService, CategoriaService>();
             services.AddSingleton<IProdutoService, ProdutoService>();
             services.AddSingleton<IDataTableToBulk, DataTableToBulk>();
-            services.AddTransient<IRabbitMensagemRepositori, RabbitMensagemRepository>();
+         
+
+            services.AddSingleton<RabbitPublisherFactory>();
+            services.Configure<RabbitConnection>(configuration.GetSection("RabbitConnection"));
+            services.Configure<RabbitPublisher>(configuration.GetSection("RabbitPublishers"));
             return services;
         }
     }

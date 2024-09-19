@@ -1,7 +1,7 @@
 using Aplication.ItemServiceHttpClient;
 using Microsoft.OpenApi.Models;
 using Refit;
-using ServiceBus;
+using ServiceBus.Publisher;
 using SistemaDeMercado.DependencesInjections;
 using System.Reflection;
 
@@ -28,23 +28,8 @@ builder.Services.AddRefitClient<IEstoqueService>().
                                                         c.Timeout = TimeSpan.FromSeconds(int.Parse(builder.Configuration["Resilience:Timeout:Api"]));
                                                     });
 
-var host = Host.CreateDefaultBuilder(args)
-            .ConfigureServices((context, services) =>
-            {
-                // Lê as configurações de RabbitMQ do appsettings.json
-                services.Configure<PublisherConfiguration>(context.Configuration.GetSection("RabbitConnection"));
 
-                // Registra o RabbitMQManager como um serviço
-                services.AddTransient<RabbitMensagemRepository>();
-            })
-            .Build();
 
-// Inicia a aplicação
-using (var scope = host.Services.CreateScope())
-{
-    var rabbitMQManager = scope.ServiceProvider.GetRequiredService<RabbitMensagemRepository>();
-    rabbitMQManager.SendMessage(queueName: "minha_fila_dinamica", message: "Mensagem dinâmica!");
-}
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

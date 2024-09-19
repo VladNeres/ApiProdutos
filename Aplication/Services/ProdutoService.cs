@@ -8,6 +8,8 @@ using Domain.Messages;
 using Domain.Models;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
+using ServiceBus.Interfaces;
+using ServiceBus.Publisher;
 
 namespace Aplication.Services;
 
@@ -16,11 +18,13 @@ public class ProdutoService : IProdutoService
     private readonly IProdutoRepository _produtoRespository;
     private readonly IDataTableToBulk _dataTableToBulk;
     private readonly IEstoqueService _estoqueService;
-    public ProdutoService(IProdutoRepository produtoRespository, IDataTableToBulk dataTableToBulk, IEstoqueService estoqueService)
+    private readonly RabbitPublisherFactory _rabbitPublisherFactory;
+    public ProdutoService(IProdutoRepository produtoRespository, IDataTableToBulk dataTableToBulk, IEstoqueService estoqueService, RabbitPublisherFactory rabbitPublisherFactory)
     {
         _produtoRespository = produtoRespository;
         this._dataTableToBulk = dataTableToBulk;
         _estoqueService = estoqueService;
+         _rabbitPublisherFactory = rabbitPublisherFactory;
     }
 
 
@@ -97,6 +101,8 @@ public class ProdutoService : IProdutoService
         }
 
         var produto = MapperProduto.CreateParaProduto(produtoDto);
+        var publisher = _rabbitPublisherFactory.CreatePublisher("CriarProdutos");
+        publisher.SendMessage(produto);
         await _produtoRespository.CriarProduto(produto, produtoDto.QuantidadeEmEstoque);
         return new MensagemBase<Produto>()
         {
@@ -104,6 +110,7 @@ public class ProdutoService : IProdutoService
             Object = produto,
             StatusCode = StatusCodes.Status201Created
         };
+
     }
 
 
