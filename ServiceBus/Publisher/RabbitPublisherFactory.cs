@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ServiceBus.Publisher
 {
-    public class RabbitPublisherFactory
+    public class RabbitPublisherFactory : IRabbitPublisherFactory
     {
         private readonly IConfiguration _configuration;
         private readonly IConnection _connection;

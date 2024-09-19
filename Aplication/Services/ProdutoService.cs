@@ -18,7 +18,7 @@ public class ProdutoService : IProdutoService
     private readonly IProdutoRepository _produtoRespository;
     private readonly IDataTableToBulk _dataTableToBulk;
     private readonly IEstoqueService _estoqueService;
-    private readonly RabbitPublisherFactory _rabbitPublisherFactory;
+    private readonly IRabbitPublisherFactory _rabbitPublisherFactory;
     public ProdutoService(IProdutoRepository produtoRespository, IDataTableToBulk dataTableToBulk, IEstoqueService estoqueService, RabbitPublisherFactory rabbitPublisherFactory)
     {
         _produtoRespository = produtoRespository;
