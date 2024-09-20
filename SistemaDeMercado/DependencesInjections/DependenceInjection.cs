@@ -40,11 +40,11 @@ namespace SistemaDeMercado.DependencesInjections
             services.AddSingleton<ICategoriaService, CategoriaService>();
             services.AddSingleton<IProdutoService, ProdutoService>();
             services.AddSingleton<IDataTableToBulk, DataTableToBulk>();
-         
+            services.AddTransient<IProdutoPublisher, ProdutoPublisher>();
 
             services.AddSingleton<RabbitPublisherFactory>();
             services.Configure<RabbitConnection>(configuration.GetSection("RabbitConnection"));
-            services.Configure<RabbitPublisher>(configuration.GetSection("RabbitPublishers"));
+            services.Configure<RabbitConfiguration>(configuration.GetSection("RabbitPublishers"));
             return services;
         }
     }

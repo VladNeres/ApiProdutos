@@ -35,7 +35,7 @@ namespace ServiceBus.Publisher
         }
 
         // Método para criar publicadores baseados no nó de configuração fornecido
-        public IRabbitPublisher CreatePublisher(string publisherConfigKey)
+        public IRabbitConfiguration CreatePublisher(string publisherConfigKey)
         {
             var publisherConfig = _configuration.GetSection($"RabbitPublisher:{publisherConfigKey}");
 
@@ -48,7 +48,7 @@ namespace ServiceBus.Publisher
             var exchangeName = publisherConfig["ExchangeName"];
             var routingKey = publisherConfig["RoutingKey"];
 
-            return new RabbitPublisher(_connection, queueName, exchangeName, routingKey);
+            return new RabbitConfiguration(_connection, queueName, exchangeName, routingKey);
         }
     }
 }

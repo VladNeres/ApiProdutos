@@ -18,13 +18,13 @@ public class ProdutoService : IProdutoService
     private readonly IProdutoRepository _produtoRespository;
     private readonly IDataTableToBulk _dataTableToBulk;
     private readonly IEstoqueService _estoqueService;
-    private readonly IRabbitPublisherFactory _rabbitPublisherFactory;
-    public ProdutoService(IProdutoRepository produtoRespository, IDataTableToBulk dataTableToBulk, IEstoqueService estoqueService, RabbitPublisherFactory rabbitPublisherFactory)
+    private readonly IProdutoPublisher _produtoPublisher;
+    public ProdutoService(IProdutoRepository produtoRespository, IDataTableToBulk dataTableToBulk, IEstoqueService estoqueService, IProdutoPublisher rabbitPublisherFactory)
     {
         _produtoRespository = produtoRespository;
         this._dataTableToBulk = dataTableToBulk;
         _estoqueService = estoqueService;
-         _rabbitPublisherFactory = rabbitPublisherFactory;
+         _produtoPublisher = rabbitPublisherFactory;
     }
 
 
@@ -101,9 +101,8 @@ public class ProdutoService : IProdutoService
         }
 
         var produto = MapperProduto.CreateParaProduto(produtoDto);
-        var publisher = _rabbitPublisherFactory.CreatePublisher("CriarProdutos");
-        publisher.SendMessage(produto);
         await _produtoRespository.CriarProduto(produto, produtoDto.QuantidadeEmEstoque);
+        await _produtoPublisher.SendMessage(produtoDto);
         return new MensagemBase<Produto>()
         {
             Message = "Produto criado com sucesso!",

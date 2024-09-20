@@ -8,6 +8,7 @@ using Domain.Models;
 using Domain.ViewlModels;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
+using ServiceBus.Interfaces;
 using Teste.BaseMock;
 using Xunit;
 
@@ -19,9 +20,10 @@ namespace Teste.ProdutoServiceTest
         private readonly IDataTableToBulk _dataTableToBulk = Substitute.For<IDataTableToBulk>();
         private readonly IProdutoService _produtoService = Substitute.For<IProdutoService>();
         private readonly IEstoqueService _estoque = Substitute.For<IEstoqueService>();
+        private readonly IProdutoPublisher _produtoPublisher = Substitute.For<IProdutoPublisher>();
         public ProdutoServiceTest()
         {
-            _produtoService = new ProdutoService(_produtoRespository, _dataTableToBulk, _estoque);
+            _produtoService = new ProdutoService(_produtoRespository, _dataTableToBulk, _estoque, _produtoPublisher);
         }
 
 

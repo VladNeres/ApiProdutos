@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceBus.Interfaces
 {
-    public interface IRabbitPublisher
+    public interface IRabbitConfiguration
     {
-        void SendMessage<T>(T message);
+        Task SendMessage<T>(T message);
     }
 }

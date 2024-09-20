@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace ServiceBus.Publisher
 {
-    public class RabbitPublisher : IRabbitPublisher
+    public class RabbitConfiguration : IRabbitConfiguration
     {
         private readonly IModel _channel;
         private readonly string _queueName;
         private readonly string _exchangeName;
         private readonly string _routingKey;
 
-        public RabbitPublisher(IConnection connection, string queueName, string exchangeName, string routingKey)
+        public RabbitConfiguration(IConnection connection, string queueName, string exchangeName, string routingKey)
         {
             _queueName = queueName;
             _exchangeName = exchangeName;
@@ -35,7 +35,7 @@ namespace ServiceBus.Publisher
             _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: _routingKey);
         }
 
-        public void SendMessage<T>(T message)
+        public async Task SendMessage<T>(T message)
         {
             var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
 

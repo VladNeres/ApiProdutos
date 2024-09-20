@@ -8,6 +8,6 @@ namespace ServiceBus.Interfaces
 {
     public interface IRabbitPublisherFactory
     {
-        IRabbitPublisher CreatePublisher(string publisherConfigKey);
+        IRabbitConfiguration CreatePublisher(string publisherConfigKey);
     }
 }
