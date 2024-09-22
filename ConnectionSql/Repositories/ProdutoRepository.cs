@@ -142,10 +142,10 @@ namespace ConnectionSql.Repositories
                 param.Add("@Status", produto.Status, DbType.Boolean);
                 param.Add("@DataCriacao", produto.DataEntrada, DbType.DateTime);
 
-                var proc = @"INSERT INTO Produtos(CodigoProduto,Nome,Valor,DataCriacao,Status,CategoriaId)
-                              VALUE (@CodigoProduto,@NomeProduto,@Valor,@DataCriacao,@Status,@CategoriaID)";
+                var query = @"INSERT INTO Produtos(CodigoProduto,Nome,Valor,DataCriacao,Status,CategoriaId)
+                              VALUES(@CodigoProduto,@NomeProduto,@Valor,@DataCriacao,@Status,@CategoriaID)";
 
-                return await ExecuteAsync(proc, param, commandType: CommandType.StoredProcedure);
+                return await ExecuteAsync(query, param, commandType: CommandType.Text);
 
             }
             catch (Exception)
