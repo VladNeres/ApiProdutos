@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ServiceBus.Publisher
+namespace ServiceBus.Base
 {
     public class RabbitConfiguration : IRabbitConfiguration
     {

@@ -130,7 +130,7 @@ namespace ConnectionSql.Repositories
 
         }
 
-        public async Task<int> CriarProduto(Produto produto, int quantidadeEmEstoque)
+        public async Task<int> CriarProduto(Produto produto)
         {
             try
             {
@@ -139,9 +139,11 @@ namespace ConnectionSql.Repositories
                 param.Add("@NomeProduto", produto.Nome, DbType.AnsiString);
                 param.Add("@CategoriaID", produto.CategoriaId, DbType.Int32);
                 param.Add("@Valor", produto.Valor, DbType.Decimal);
-                param.Add("@QuantidadeEmEstoque", quantidadeEmEstoque, DbType.Int32);
+                param.Add("@Status", produto.Status, DbType.Boolean);
+                param.Add("@DataCriacao", produto.DataEntrada, DbType.DateTime);
 
-                var proc = @"CriarProduto";
+                var proc = @"INSERT INTO Produtos(CodigoProduto,Nome,Valor,DataCriacao,Status,CategoriaId)
+                              VALUE (@CodigoProduto,@NomeProduto,@Valor,@DataCriacao,@Status,@CategoriaID)";
 
                 return await ExecuteAsync(proc, param, commandType: CommandType.StoredProcedure);
 

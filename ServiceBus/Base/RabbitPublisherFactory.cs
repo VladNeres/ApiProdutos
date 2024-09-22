@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceBus.Publisher
+namespace ServiceBus.Base
 {
     public class RabbitPublisherFactory : IRabbitPublisherFactory
     {
@@ -18,20 +18,20 @@ namespace ServiceBus.Publisher
         {
             _configuration = configuration;
 
-           var hostname = _configuration["RabbitConnection:Connection:HostName"];
-           var user =   _configuration["RabbitConnection:Connection:UserName"];
-           var  pass = _configuration["RabbitConnection:Connection:Password"];
+            var hostname = _configuration["RabbitConnection:Connection:HostName"];
+            var user = _configuration["RabbitConnection:Connection:UserName"];
+            var pass = _configuration["RabbitConnection:Connection:Password"];
             // Configurações gerais de conexão com RabbitMQ
-            
-                var factory = new ConnectionFactory()
-                {
-                    HostName = hostname,
-                    UserName = user,
-                    Password = pass
-                };
 
-                _connection = factory.CreateConnection();
-            
+            var factory = new ConnectionFactory()
+            {
+                HostName = hostname,
+                UserName = user,
+                Password = pass
+            };
+
+            _connection = factory.CreateConnection();
+
         }
 
         // Método para criar publicadores baseados no nó de configuração fornecido

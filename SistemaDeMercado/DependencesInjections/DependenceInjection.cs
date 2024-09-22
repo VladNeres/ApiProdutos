@@ -43,7 +43,6 @@ namespace SistemaDeMercado.DependencesInjections
             services.AddTransient<IProdutoPublisher, ProdutoPublisher>();
 
             services.AddSingleton<RabbitPublisherFactory>();
-            services.Configure<RabbitConnection>(configuration.GetSection("RabbitConnection"));
             services.Configure<RabbitConfiguration>(configuration.GetSection("RabbitPublishers"));
             return services;
         }

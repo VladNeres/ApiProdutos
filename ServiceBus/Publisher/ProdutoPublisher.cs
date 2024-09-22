@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using ServiceBus.Base;
 using ServiceBus.Interfaces;
 using System;
 using System.Collections.Generic;

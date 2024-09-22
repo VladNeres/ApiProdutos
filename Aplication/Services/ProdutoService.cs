@@ -101,8 +101,8 @@ public class ProdutoService : IProdutoService
         }
 
         var produto = MapperProduto.CreateParaProduto(produtoDto);
-        await _produtoRespository.CriarProduto(produto, produtoDto.QuantidadeEmEstoque);
-        await _produtoPublisher.SendMessage(produtoDto);
+        await _produtoRespository.CriarProduto(produto);
+        await _produtoPublisher.SendMessage(produto);
         return new MensagemBase<Produto>()
         {
             Message = "Produto criado com sucesso!",
