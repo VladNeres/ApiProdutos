@@ -59,7 +59,7 @@ public class ProdutoController : Controller
     public async Task<IActionResult> Post([FromBody] CreateProdutoDto categoriaDto)
     {
         var response = await _produtoService.CriarProduto(categoriaDto);
-        if(response == null) return NoContent();
+        if(response.Object == null) return NoContent();
         return CreatedAtAction(nameof(GetFirstOrDefault), new { ID = response.Object.CodigoProduto }, response);
     }
 

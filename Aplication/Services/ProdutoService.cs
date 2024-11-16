@@ -1,6 +1,7 @@
 ﻿using Aplication.ItemServiceHttpClient;
 using Aplication.Mappers.mapperProduto;
 using Aplication.SeviceInterfaces;
+using AutoMapper;
 using ConnectionSql.Dtos.ProdutosDtos;
 using ConnectionSql.RepositopriesInterfaces;
 using ConnectionSql.Repositories;
@@ -72,7 +73,6 @@ public class ProdutoService : IProdutoService
     public async Task<MensagemBase<ReadProdutoDto>> BuscarProdutosPorId(Guid id)
     {
         var response = await _produtoRespository.BuscarPorId(id);
-        var readDto = MapperProduto.ParaReadProdutoDto(response);
 
         if (response == null)
             return new MensagemBase<ReadProdutoDto>()
@@ -80,6 +80,8 @@ public class ProdutoService : IProdutoService
                 Message = "Pedido não encontrado",
                 StatusCode = StatusCodes.Status204NoContent
             };
+       
+        ReadProdutoDto readDto = MapperProduto.ParaReadProdutoDto(response);
         return new MensagemBase<ReadProdutoDto>()
         {
             Object = readDto,
@@ -89,20 +91,30 @@ public class ProdutoService : IProdutoService
 
     public async Task<MensagemBase<Produto>> CriarProduto(CreateProdutoDto produtoDto)
     {
-        var existeNaBase = await _produtoRespository.BuscarPedidoCompleto();
-        if (existeNaBase.FirstOrDefault(p => p.Nome == produtoDto.Nome) != null)
+         
+         Produto produto = produtoDto.ParaProduto();
+         MensagemBase<ReadProdutoDto> existeNaBase =  await BuscarProdutosPorId(produto.CodigoProduto);
+       
+        
+        if (existeNaBase.Object != null)
         {
             return new MensagemBase<Produto>()
             {
                 Message = "O produto ja existe",
-                Object = produtoDto.CreateParaProduto(),
+                Object = produtoDto.ParaProduto(),
                 StatusCode = StatusCodes.Status422UnprocessableEntity
             };
         }
 
-        var produto = MapperProduto.CreateParaProduto(produtoDto);
         await _produtoRespository.CriarProduto(produto);
-        await _produtoPublisher.SendMessage(produto);
+        if(!_produtoPublisher.SendMessage(produto).IsCompleted)
+            return new MensagemBase<Produto>()
+            {
+                Message = "Oops houve algum erro no envio da mensagem",
+                Object = null,
+                StatusCode = StatusCodes.Status400BadRequest
+            };
+
         return new MensagemBase<Produto>()
         {
             Message = "Produto criado com sucesso!",

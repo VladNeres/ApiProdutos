@@ -23,8 +23,13 @@ namespace ServiceBus.Publisher
         public async Task SendMessage<T>(T message)
         {
             if(message == null) throw new ArgumentNullException("Erro no envio da mensagem");
+            
             var publisher = _rabbitPublisherFactory.CreatePublisher("CriarProdutos");
-          await  publisher.SendMessage(message);
+
+            if (publisher == null)
+                throw new InvalidOperationException("Não foi possível se conectar ao serviço de mensageria");
+
+            await publisher.SendMessage(message);
        
         }
     }

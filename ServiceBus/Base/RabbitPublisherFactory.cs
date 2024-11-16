@@ -4,6 +4,7 @@ using ServiceBus.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,10 +28,20 @@ namespace ServiceBus.Base
             {
                 HostName = hostname,
                 UserName = user,
-                Password = pass
+                Password = pass,
             };
 
-            _connection = factory.CreateConnection();
+            try
+            {
+                _connection = factory.CreateConnection();
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Não foi possível se conectar ao serviço de mensageria");
+
+                return;
+            }
 
         }
 
@@ -47,6 +58,9 @@ namespace ServiceBus.Base
             var queueName = publisherConfig["QueueName"];
             var exchangeName = publisherConfig["ExchangeName"];
             var routingKey = publisherConfig["RoutingKey"];
+
+            if (_connection == null)
+                return null;
 
             return new RabbitConfiguration(_connection, queueName, exchangeName, routingKey);
         }
