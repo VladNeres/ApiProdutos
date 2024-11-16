@@ -6,7 +6,7 @@ namespace Aplication.Mappers.mapperProduto
 {
     public static class MapperProduto
     {
-        public static Produto CreateParaProduto(this CreateProdutoDto CreateprodutoDto)
+        public static Produto ParaProduto(this CreateProdutoDto CreateprodutoDto)
         {
             return new Produto()
             {

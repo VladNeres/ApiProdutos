@@ -154,6 +154,7 @@ namespace ConnectionSql.Repositories
                 throw;
             }
         }
+      
         public async Task<bool> AtualizarProduto(Guid id, Produto produto)
         {
             DynamicParameters param = new DynamicParameters();

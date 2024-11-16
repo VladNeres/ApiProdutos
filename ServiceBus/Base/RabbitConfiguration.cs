@@ -22,18 +22,18 @@ namespace ServiceBus.Base
             _exchangeName = exchangeName;
             _routingKey = routingKey;
 
-
-            _channel = connection.CreateModel();
-
-            // Declaração da fila e exchange
-            if (!string.IsNullOrEmpty(_exchangeName))
+            try
             {
-                _channel.ExchangeDeclare(exchange: _exchangeName, type: "direct");
+                _channel = connection.CreateModel();
             }
+            catch (Exception)
+            {
 
-            _channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
-            _channel.QueueBind(queue: _queueName, exchange: _exchangeName, routingKey: _routingKey);
+                Console.WriteLine($"Não foi possivel se conectar ao serviço de mensageria");
+                return;
+            }
         }
+        
 
         public async Task SendMessage<T>(T message)
         {
