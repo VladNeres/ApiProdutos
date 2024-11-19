@@ -73,3 +73,8 @@ Basta clonar os projetos em sua maquina, va no arquivo appsettings.json e nesse 
 <ol>
   <li>caso esteja utilizando a autenticação do whindos no seu sql, comente a conection que faz refencia ao servidor do docker com as credenciais, e descomente a outra conection, alterando o server para seu server local </li>
   <li> Caso esteja utilizando a autenticação por credenciais do sql, basta alterar o server, user e senha da connection string.</li>
+
+
+ ## Video da utilizacao da api
+
+ [Video](https://www.loom.com/share/67cd22d5982b4df88892228525006dd5?sid=8e06c731-b106-46cc-84a3-bf1240529742) 
